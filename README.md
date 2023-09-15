@@ -1,5 +1,5 @@
 # GreenExam
-## Sustainable programming environment for electronic exams
+## :leaves: Sustainable programming environment for electronic exams :leaves:
 
 The aim of this project is to create a sustainable, adaptive web-based Integrated Development Environment (IDE) for electronic exams. This IDE will be designed to be resource-efficient and adaptive to system metrics like CPU and RAM usage. When the system is under heavy load, it will dynamically scale down non-essential features to maintain stability.
 
