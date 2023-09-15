@@ -71,11 +71,11 @@ The key is to identify functionalities that can be classified as "nice-to-have" 
 
 Some functionalities naturally fit together and toggling them as a group might yield better resource management.
 
-**Read-heavy Operations:** Features like dashboard Updates, real-time Notifications, leaderboard/statistics are read-heavy and could be toggled together.
+**Read-heavy Operations**<br>Features like dashboard Updates, real-time Notifications, leaderboard/statistics are read-heavy and could be toggled together.
 
-**Write-heavy Operations:** Features like version control, file operations, and chat support are more write-heavy and could be grouped together.
+**Write-heavy Operations**<br>Features like version control, file operations, and chat support are more write-heavy and could be grouped together.
 
-**Compute-heavy Operations:** Real-time Compilation, auto-completion, code analysis are more CPU-intensive and could be toggled as a group.
+**Compute-heavy Operations**<br>Real-time Compilation, auto-completion, code analysis are more CPU-intensive and could be toggled as a group.
 
 ### Concurrency
 
