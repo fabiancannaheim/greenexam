@@ -94,3 +94,16 @@ Some functionalities naturally fit together and toggling them as a group might y
 
 **Microservices Architecture**Decomposition of an application into small, loosely coupled services. This will allow to scale only parts of the application that are under stress.
 
+### Implementation details
+
+#### Monitoring server load with prometheus
+
+Prometheus is the tool of choice due to it's scalability and reliability. It offers a query language to utilize load metrics and works well with visualization tools like Grafana. It consists of:
+
+- **Prometheus server** which collected metrics and stores them
+- **Node exporter** exports system metrics like CPU and memory figures
+- **Instrumentation** possible via client libraries to instrument the node.js code
+
+This way, each time the backend application is called, the program will be able to first check the system metrics. Based on this check, an algorithm will decide the scope of functions to be delivered to the user.
+
+
