@@ -104,6 +104,4 @@ Prometheus is the tool of choice due to it's scalability and reliability. It off
 - **Node exporter** exports system metrics like CPU and memory figures
 - **Instrumentation** possible via client libraries to instrument the node.js code
 
-This way, each time the backend application is called, the program will be able to first check the system metrics. Based on this check, an algorithm will decide the scope of functions to be delivered to the user.
-
-
+Each time the backend application is called, the program will be able to first check the system metrics. Based on this check, an algorithm will decide the scope of functions to be delivered to the user. Of course a simple OS library would be enough to check system metrics. But Prometheus can collect metrics from the application and infrastructure in real-time. This is crucial for identifying when a system is under heavy load. In addition, Prometheus stores historical data that can be used for analysis. Understanding past system behavior under load will help make informed decisions for future optimizations. Metrics collected by Prometheus can also be visualized using for example Grafana or Prometheus' own UI. These visualizations can help better understand the system's state and how it changes under different conditions.
