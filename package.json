@@ -1,0 +1,23 @@
+{
+  "name": "greenexam",
+  "version": "1.0.0",
+  "description": "The aim of this project is to create a sustainable, adaptive web-based Integrated Development Environment (IDE) for electronic exams. This IDE will be designed to be resource-efficient and adaptive to system metrics like CPU and RAM usage. When the system is under heavy load, it will dynamically scale down non-essential features to maintain stability.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabiancannaheim/greenexam.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fabiancannaheim/greenexam/issues"
+  },
+  "homepage": "https://github.com/fabiancannaheim/greenexam#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
