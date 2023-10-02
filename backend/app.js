@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-
+const authRoutes = require('./routes/authRoutes')
 const codeRoutes = require('./routes/codeRoutes')
 const userRoutes = require('./routes/userRoutes')
 const examRoutes = require('./routes/examRoutes')
@@ -18,9 +18,10 @@ app.use(bodyParser.json())
 app.use(sessionMiddleware)
 
 // Routes
-app.use('/code', codeRoutes)
+app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
 app.use('/exams', examRoutes)
+app.use('/code', codeRoutes)
 
 app.get('/', (req, res) => {
   res.send('GreenExam')
