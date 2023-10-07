@@ -10,9 +10,12 @@ const login = async (req, res) => {
     const user = await verifyCredentials(username, password)
 
     if (user) {
-        req.session.user = { id: user.id, username: user.username }
+        req.session.userId = user.id
+        req.session.username = user.username
+        req.session.isAuthenticated = true
+        console.log(req.session)
         const token = jwt.sign({ userId: user.id }, process.env.JSON_WEB_TOKEN_SECRET_KEY, { expiresIn: '1h' })
-        res.json({ token })
+        res.json({ message: "Login successful", token: token})
     } else {
         res.status(401).json({ error: 'Invalid credentials' })
     }
