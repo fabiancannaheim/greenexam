@@ -1,5 +1,5 @@
 
-const { getUserByIDFromDB, getUserByUsernameFromDB, getAllUsersFromDB, insertUserIntoDB } = require('../models/userModel')
+const { getUserByIdFromDB, getUserByUsernameFromDB, getAllUsersFromDB, insertUserIntoDB, updateUserByIdInDB, deleteUserByIdInDB } = require('../models/userModel')
 
 const getAllUsers = async (req, res) => {
     try {
@@ -10,7 +10,7 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-const getUserByID = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
       const id =  req.params.id
 
@@ -18,7 +18,7 @@ const getUserByID = async (req, res) => {
           return res.status(400).send("User ID must be a valid number")
       }
 
-      const user = await getUserByIDFromDB(id)
+      const user = await getUserByIdFromDB(id)
       res.json(user);
   } catch (error) {
       res.status(500).send(error.toString())
@@ -56,4 +56,26 @@ const createUser = (role) => {
 const createStudent = createUser('student')
 const createAdmin = createUser('admin')
 
-module.exports = { getAllUsers, getUserByID, getUserByUsername, createStudent, createAdmin }
+const updateUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        const result = await updateUserByIdInDB(id, data);
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
+}
+
+const deleteUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const result = await deleteUserByIdInDB(id);
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
+}
+
+
+module.exports = { getAllUsers, getUserById, getUserByUsername, createStudent, createAdmin, updateUserById, deleteUserById }

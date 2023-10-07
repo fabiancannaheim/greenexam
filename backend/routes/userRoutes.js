@@ -1,15 +1,18 @@
 const express = require('express')
 const router = express.Router()
 
-const { verifyToken } = require('../middleware/authMiddleware')
-const { getAllUsers, getUserByID, getUserByUsername, createStudent, createAdmin } = require('../controllers/userController')
+const { getAllUsers, getUserById, getUserByUsername, createStudent, createAdmin, updateUserById, deleteUserById } = require('../controllers/userController')
 
-router.post('/read/all', verifyToken, getAllUsers)
-router.post('/read/id/:id', verifyToken, getUserByID)
-router.post('/read/username/:username', verifyToken, getUserByUsername)
+router.get('/', getAllUsers)
+router.get('/:id', getUserById)
+router.get('/name/:username', getUserByUsername)
 
-router.post('/create/admin', createAdmin)
-router.post('/create/student', createStudent)
+router.post('/admin', createAdmin)
+router.post('/student', createStudent)
+
+router.put('/:id', updateUserById)
+
+router.delete('/:id', deleteUserById)
 
 
 module.exports = router

@@ -13,7 +13,6 @@ const login = async (req, res) => {
         req.session.userId = user.id
         req.session.username = user.username
         req.session.isAuthenticated = true
-        console.log(req.session)
         const token = jwt.sign({ userId: user.id }, process.env.JSON_WEB_TOKEN_SECRET_KEY, { expiresIn: '1h' })
         res.json({ message: "Login successful", token: token})
     } else {
@@ -26,7 +25,7 @@ const logout = async (req, res) => {
         if (err) {
             return res.status(500).json({ error: 'Could not log out, please try again' });
         }
-        res.clearCookie('sid'); // 'sid' should be the name of your session id
+        res.clearCookie(process.env.SESSION_COOKIE_NAME); // 'sid' should be the name of your session id
         return res.status(200).json({ message: 'Logged out successfully' });
     })
 }

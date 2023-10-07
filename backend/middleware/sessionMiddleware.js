@@ -11,7 +11,7 @@ const sessionMiddleware = session({
   cookie: { 
     secure: process.env.SESSION_COOKIE_SECURE === 'true', 
     maxAge: 86400000,
-    name: 'sid'
+    name: process.env.SESSION_COOKIE_NAME
   } 
 })
 

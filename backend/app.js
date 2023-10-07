@@ -2,7 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const authRoutes = require('./routes/authRoutes')
-const codeRoutes = require('./routes/codeRoutes')
+const progLangRoutes = require('./routes/progLangRoutes')
+const executionRoutes = require('./routes/executionRoutes')
 const userRoutes = require('./routes/userRoutes')
 const examRoutes = require('./routes/examRoutes')
 const sessionMiddleware = require('./middleware/sessionMiddleware')
@@ -20,8 +21,9 @@ app.use(sessionMiddleware)
 // Routes
 app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
+app.use('/proglang', progLangRoutes)
 app.use('/exams', examRoutes)
-app.use('/code', codeRoutes)
+app.use('/execution', executionRoutes)
 
 app.get('/', (req, res) => {
   res.send('GreenExam')
