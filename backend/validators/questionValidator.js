@@ -17,6 +17,10 @@ module.exports = {
         check('points').isNumeric().withMessage('points must be a valid numeric value'),
         check('exam_id').isNumeric().withMessage('exam_id must be a valid numeric value'),
         check('lang_id').isNumeric().withMessage('lang_id must be a valid numeric value')
+    ],
+
+    byExam: [
+        check('exam_id').notEmpty().withMessage('exam_id is required'),
     ]
 
 }

@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes')
 const examRoutes = require('./routes/examRoutes')
 const questionRoutes = require('./routes/questionRoutes')
 const hintRoutes = require('./routes/hintRoutes')
+const answerRoutes = require('./routes/answerRoutes')
 const executionRoutes = require('./routes/executionRoutes')
 
 const sessionMiddleware = require('./middleware/sessionMiddleware')
@@ -24,10 +25,11 @@ app.use(sessionMiddleware)
 // Routes
 app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
-app.use('/proglang', progLangRoutes)
 app.use('/exams', examRoutes)
 app.use('/questions', questionRoutes)
 app.use('/hints', hintRoutes)
+app.use('/answers', answerRoutes)
+app.use('/proglang', progLangRoutes)
 app.use('/execution', executionRoutes)
 
 app.get('/', (req, res) => {
