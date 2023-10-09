@@ -1,17 +1,15 @@
 const express = require('express')
 const router = express.Router()
 
-const { getAllProgLangs, getProgLangById, getProgLangByName, createProgLang, updateProgLangById, deleteProgLangById } = require('../controllers/progLangController')
+const paramCheck = require('../validators/progLangValidator')
+const validate = require('../middleware/validationMiddleware')
+const progLangController = require('../controllers/progLangController')
 
-router.get('/', getAllProgLangs)
-router.get('/:id', getProgLangById)
-router.get('/name/:username', getProgLangByName)
-
-router.post('/', createProgLang)
-
-router.put('/:id', updateProgLangById)
-
-router.delete('/:id', deleteProgLangById)
+router.get('/', progLangController.getAll)
+router.get('/:id', paramCheck.id, validate, progLangController.getById)
+router.post('/', paramCheck.insert, validate, progLangController.create)
+router.put('/:id', paramCheck.id, validate, progLangController.update)
+router.delete('/:id', paramCheck.id, validate, progLangController.delete)
 
 
 module.exports = router

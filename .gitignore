@@ -22,6 +22,7 @@
 ######################
 *.log
 *.sql
+!init.sql
 *.sqlite
 
 # OS generated files #

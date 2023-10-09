@@ -3,9 +3,12 @@ const bodyParser = require('body-parser')
 
 const authRoutes = require('./routes/authRoutes')
 const progLangRoutes = require('./routes/progLangRoutes')
-const executionRoutes = require('./routes/executionRoutes')
 const userRoutes = require('./routes/userRoutes')
 const examRoutes = require('./routes/examRoutes')
+const questionRoutes = require('./routes/questionRoutes')
+const hintRoutes = require('./routes/hintRoutes')
+const executionRoutes = require('./routes/executionRoutes')
+
 const sessionMiddleware = require('./middleware/sessionMiddleware')
 const errorHandlingMiddleware = require('./middleware/errorHandlingMiddleware')
 
@@ -23,6 +26,8 @@ app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
 app.use('/proglang', progLangRoutes)
 app.use('/exams', examRoutes)
+app.use('/questions', questionRoutes)
+app.use('/hints', hintRoutes)
 app.use('/execution', executionRoutes)
 
 app.get('/', (req, res) => {

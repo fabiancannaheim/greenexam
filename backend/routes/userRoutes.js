@@ -1,18 +1,15 @@
 const express = require('express')
 const router = express.Router()
 
-const { getAllUsers, getUserById, getUserByUsername, createStudent, createAdmin, updateUserById, deleteUserById } = require('../controllers/userController')
+const paramCheck = require('../validators/userValidator')
+const validate = require('../middleware/validationMiddleware')
+const controller = require('../controllers/userController')
 
-router.get('/', getAllUsers)
-router.get('/:id', getUserById)
-router.get('/name/:username', getUserByUsername)
-
-router.post('/admin', createAdmin)
-router.post('/student', createStudent)
-
-router.put('/:id', updateUserById)
-
-router.delete('/:id', deleteUserById)
-
+router.get('/', controller.getAll)
+router.get('/:id', paramCheck.id, validate, controller.getById)
+router.post('/admin', paramCheck.insert, validate, controller.createAdmin)
+router.post('/student', paramCheck.insert, validate, controller.createStudent)
+router.put('/:id', paramCheck.id, validate, controller.updateUser)
+router.delete('/:id', paramCheck.id, validate, controller.delete)
 
 module.exports = router

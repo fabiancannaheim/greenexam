@@ -3,12 +3,10 @@ const { spawn } = require('child_process')
 
 const executeCode = (req, res) => {
 
-    const language = req.params.language
+    const lang = req.params.language
     const code = req.body.code
 
-    if (!code) return res.status(400).send('No code provided.')
-
-    switch (language) {
+    switch (lang) {
         case 'python':
             executePython(code, (error, result) => handleExecutionResponse(error, result, res))
             break

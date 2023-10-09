@@ -1,21 +1,20 @@
 const express = require('express')
 const router = express.Router()
 
-const { getAllExams, getExamById, createExam, updateExamById, deleteExamById } = require('../controllers/examController')
-const { getAllExamQuestions, getExamQuestionById, createQuestion, updateQuestion, deleteQuestion } = require('../controllers/questionController')
+const paramCheck = require('../validators/examValidator')
+const validate = require('../middleware/validationMiddleware')
+const examController = require('../controllers/examController');
+const questionController = require('../controllers/questionController')
 
 // exams
-router.get('/', getAllExams)
-router.get('/:id', getExamById)
-router.post('/', createExam)
-router.put('/:id', updateExamById)
-router.delete('/:id', deleteExamById)
+router.get('/', examController.getAll)
+router.get('/:id', paramCheck.id, validate, examController.getById)
+router.post('/', paramCheck.insert, validate, examController.createExam)
+router.put('/:id', paramCheck.id, validate, examController.update)
+router.delete('/:id', paramCheck.id, validate, examController.delete)
 
 // questions
-router.get('/:id/questions', getAllExamQuestions)
-router.get('/:examId/questions/:questionId', getExamQuestionById)
-router.post('/:id/questions', createQuestion)
-router.put('/:examId/questions/:questionId', updateQuestion)
-router.delete('/:examId/questions/:questionId', deleteQuestion)
+router.get('/:id/questions', questionController.getAllByExamId)
+
 
 module.exports = router

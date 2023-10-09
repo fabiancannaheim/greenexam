@@ -1,12 +1,17 @@
 const express = require('express')
 const router = express.Router()
 
-const { getAllQuestionHints, getHint, createHint, updateHint, deleteHint } = require('../controllers/hintController')
+const paramCheck = require('../validators/questionValidator')
+const validate = require('../middleware/validationMiddleware')
+const questionController = require('../controllers/questionController')
+const hintController = require('../controllers/hintController')
 
-router.get('/:questionId/hints', getAllQuestionHints)
-router.get('/:questionId/hints/:id', getHint)
-router.post('/:id/hints', createHint)
-router.put('/:questionId/hints/:id', updateHint)
-router.delete('/:questionId/hints/:id', deleteHint)
+router.get('/', questionController.getAll)
+router.get('/:id', paramCheck.id, validate, questionController.getById)
+router.post('/', paramCheck.insert, validate, questionController.create)
+router.put('/:id', paramCheck.id, validate, questionController.update)
+router.delete('/:id', paramCheck.id, validate, questionController.delete)
+
+router.get('/:id/hints', hintController.getAllByQuestionId)
 
 module.exports = router
