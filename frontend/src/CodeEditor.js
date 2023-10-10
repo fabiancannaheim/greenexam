@@ -7,7 +7,7 @@ const CodeEditor = ({ code, onChange }) => {
     // Initialize CodeMirror
     const codeMirror = window.CodeMirror(editorRef.current, {
       value: code,
-      mode: "javascript",
+      mode: "python",
       theme: "material",
       lineNumbers: true,
     });
@@ -27,7 +27,13 @@ const CodeEditor = ({ code, onChange }) => {
     };
   }, [code, onChange]);
 
-  return <div ref={editorRef} />;
+  // return <div ref={editorRef} />;
+  return (
+    <div className="code-editor">
+      <h2>Code Editor</h2>
+      <textarea ref={editorRef} defaultValue={code} />
+    </div>
+  );
 };
 
 export default CodeEditor;
