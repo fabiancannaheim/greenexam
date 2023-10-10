@@ -30,14 +30,18 @@ Run the database reset and test script:
 
 The application requires specific environment variables to run correctly. These are defined in the .env file. An example file .env.example is provided to showcase the structure.
 
-DB_HOST: Host for MySQL instance, usually "localhost".
-DB_USER: Database username
-DB_PASS: Database password
-DB_PASS_ROOT = Database root user password (for resetting the database when executing test script)
-SESSION_KEY="A long hash"
-SESSION_COOKIE_SECURE = "false" # Set to true if using HTTPS
-SESSION_COOKIE_NAME = 'A long hash'
-JSON_WEB_TOKEN_SECRET_KEY = "A long hash"
+
+<ul>
+    <li>**DB_HOST**: Host for MySQL instance, usually "localhost".</li>
+    <li>**DB_USER**: Database username**</li>
+    <li>**DB_PASS**: Database password</li>
+    <li>**DB_PASS_ROOT**: Database root user password (for resetting the database when executing test script)</li>
+    <li>**SESSION_KEY**: A long hash</li>
+    <li>**SESSION_COOKIE_SECURE**: false (for HTTP) / true (for HTTPS)</li>
+    <li>**SESSION_COOKIE_NAME**: A long hash</li>
+    <li>**JSON_WEB_TOKEN_SECRET_KEY**: A long hash</li>
+</ul>
+
 
 ## API Endpoints
 
