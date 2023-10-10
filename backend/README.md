@@ -15,7 +15,7 @@ Navigate to the backend directory:
 cd /backend
 ```
 
-Install the required packages:
+Install **the required packages:
 ```
 npm install
 ```
@@ -32,14 +32,14 @@ The application requires specific environment variables to run correctly. These 
 
 
 <ul>
-    <li>**DB_HOST**: Host for MySQL instance, usually "localhost".</li>
-    <li>**DB_USER**: Database username**</li>
-    <li>**DB_PASS**: Database password</li>
-    <li>**DB_PASS_ROOT**: Database root user password (for resetting the database when executing test script)</li>
-    <li>**SESSION_KEY**: A long hash</li>
-    <li>**SESSION_COOKIE_SECURE**: false (for HTTP) / true (for HTTPS)</li>
-    <li>**SESSION_COOKIE_NAME**: A long hash</li>
-    <li>**JSON_WEB_TOKEN_SECRET_KEY**: A long hash</li>
+    <li><b>DB_HOST</b>: Host for MySQL instance, usually "localhost".</li>
+    <li><b>DB_USER</b>: Database username</li>
+    <li><b>DB_PASS</b>: Database password</li>
+    <li><b>DB_PASS_ROOT</b>: Database root user password (for resetting the database when executing test script)</li>
+    <li><b>SESSION_KEY</b>: A long hash</li>
+    <li><b>SESSION_COOKIE_SECURE</b>: false (for HTTP) / true (for HTTPS)</li>
+    <li><b>SESSION_COOKIE_NAME</b>: A long hash</li>
+    <li><b>JSON_WEB_TOKEN_SECRET_KEY</b>: A long hash</li>
 </ul>
 
 
@@ -48,84 +48,83 @@ The application requires specific environment variables to run correctly. These 
 #### Users
 
 <ul>
-    <li>Get all users: **GET /users**</li>
-    <li>Get a specific user by ID: **GET /users/:id**</li>
-    <li>Create a new admin user: **POST /users/admin**</li>
-    <li>Create a new student user: **POST /users/student**</li>
-    <li>Update a specific user by ID: **PUT /users/:id**</li>
-    <li>Delete a specific user by ID: **DELETE /users/:id**</li>
+    <li>Get all <b>users</b>: <i>GET /users</i></li>
+    <li>Get a specific <b>user</b> by ID: <i>GET /users/:id</i></li>
+    <li>Create a new admin <b>user</b>: <i>POST /users/admin</i></li>
+    <li>Create a new student <b>user</b>: <i>POST /users/student</i></li>
+    <li>Update a specific <b>user</b> by ID: <i>PUT /users/:id</i></li>
+    <li>Delete a specific <b>user</b> by ID: <i>DELETE /users/:id</i></li>
 </ul>
 
 #### Authentication
 
 <ul>
-    <li>Login: **POST /auth/login**</li>
-    <li>Logout: **POST /auth/logout**</li>
+    <li>Login: <i>POST /auth/login</i></li>
+    <li>Logout: <i>POST /auth/logout</i></li>
 </ul>
 
 #### Code Execution
 
 <ul>
-    <li>Code execution: **POST /execution/:language**</li>
+    <li>Code <b>execution</b>: <i>POST /execution/:language</i></li>
 </ul>
 
 #### Programming Languages
 
 <ul>
-    <li>Get all languages: **GET /progLang**</li>
-    <li>Get a specific language by ID: **GET /progLang/:id**</li>
-    <li>Create a new language: **POST /progLang**</li>
-    <li>Update a specific language by ID: **PUT /progLang/:id**</li>
-    <li>Delete a specific language by ID: **DELETE /progLang/:id**</li>
+    <li>Get all <b>languages</b>: <i>GET /progLang</i></li>
+    <li>Get a specific <b>language</b> by ID: <i>GET /progLang/:id</i></li>
+    <li>Create a new <b>language</b>: <i>POST /progLang</i></li>
+    <li>Update a specific <b>language</b> by ID: <i>PUT /progLang/:id</i></li>
+    <li>Delete a specific <b>language</b> by ID: <i>DELETE /progLang/:id</i></li>
 </ul>
 
 #### Exams
 
 <ul>
-    <li>Get all exams: **GET /exams**</li>
-    <li>Get a specific exam by ID: **GET /exams/:id**</li>
-    <li>Create a new exam: **POST /exams**</li>
-    <li>Update a specific exam by ID: **PUT /exams/:id**</li>
-    <li>Delete a specific exam by ID: **DELETE /exams/:id**</li>
+    <li>Get all <b>exams</b>: <i>GET /exams</i></li>
+    <li>Get a specific <b>exam</b> by ID: <i>GET /exams/:id</i></li>
+    <li>Create a new <b>exam</b>: <i>POST /exams</i></li>
+    <li>Update a specific <b>exam</b> by ID: <i>PUT /exams/:id</i></li>
+    <li>Delete a specific <b>exam</b> by ID: <i>DELETE /exams/:id</i></li>
 </ul>
 
 <ul>
-    <li>Get all questions of an exam: **GET /exams/:id/questions**</li>
-    <li>Get all answers of a user of an exam: **GET /:examId/users/:userId/answers**</li>
+    <li>Get all <b>questions</b> of an <b>exam</b>: <i>GET /exams/:id/questions</i></li>
+    <li>Get all <b>answers</b> of a <b>user</b> of an <b>exam</b>: <i>GET /:examId/users/:userId/answers</i></li>
 </ul>
 
 #### Questions
 
 <ul>
-    <li>Get all questions: **GET /questions**</li>
-    <li>Get a specific question by ID: **GET /questions/:id**</li>
-    <li>Create a new question: **POST /questions**</li>
-    <li>Update a specific question by ID: **PUT /questions/:id**</li>
-    <li>Delete a specific question by ID: **DELETE /questions/:id**</li>
+    <li>Get all <b>questions</b>: <i>GET /questions</i></li>
+    <li>Get a specific <b>question</b> by ID: <i>GET /questions/:id</i></li>
+    <li>Create a new <b>question</b>: <i>POST /questions</i></li>
+    <li>Update a specific <b>question</b> by ID: <i>PUT /questions/:id</i></li>
+    <li>Delete a specific <b>question</b> by ID: <i>DELETE /questions/:id</i></li>
 </ul>
-
 <ul>
-    <li>Get all hints of a specific question: **/questions/:id/hints**</li>
+    <li>Get all <b>hints</b> of a specific <b>question</b>: <i>/questions/:id/hints</i></li>
 </ul>
 
 #### Hints
 
 <ul>
-    <li>Get all hints: **GET /hints**</li>
-    <li>Get a specific hint by ID: **GET /hints/:id**</li>
-    <li>Create a new hint: **POST /hints**</li>
-    <li>Update a specific hint by ID: **PUT /hints/:id**</li>
-    <li>Delete a specific hint by ID: **DELETE /hints/:id**</li>
+    <li>Get all <b>hints</b>: <i>GET /hints</i></li>
+    <li>Get a specific <b>hint</b> by ID: <i>GET /hints/:id</i></li>
+    <li>Create a new <b>hint</b>: <i>POST /hints</i></li>
+    <li>Update a specific <b>hint</b> by ID: <i>PUT /hints/:id</i></li>
+    <li>Delete a specific <b>hint</b> by ID: <i>DELETE /hints/:id</i></li>
 </ul>
 
 #### Answers
 
 <ul>
-    <li>Get all answers: **GET /answers**</li>
-    <li>Get a specific answer by ID: **GET /answers/:id**</li>
-    <li>Create a new answer: **POST /answers**</li>
-    <li>Update a specific answer by ID: **PUT /answers/:id**</li>
-    <li>Delete a specific answer by ID: **DELETE /answers/:id**</li>
+    <li>Get all <b>answers</b>: <i>GET /answers</i></li>
+    <li>Get a specific <b>answer</b> by ID: <i>GET /answers/:id</i></li>
+    <li>Create a new <b>answer</b>: <i>POST /answers</i></li>
+    <li>Update a specific <b>answer</b> by ID: <i>PUT /answers/:id</i></li>
+    <li>Delete a specific <b>answer</b> by ID: <i>DELETE /answers/:id</i></li>
 </ul>
 
 
