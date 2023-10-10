@@ -80,5 +80,5 @@ __pycache__/
 # Other #
 #########
 *.env
-*.env.example
+!.env.example
 *.git
