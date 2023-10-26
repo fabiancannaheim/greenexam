@@ -10,6 +10,7 @@ import Tests from "./Tests";
 import "react-grid-layout/css/styles.css";
 import "./App.css";
 
+export const API_URL = "http://192.168.1.8:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
