@@ -1,6 +1,7 @@
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
+import axios from "axios";
 import React, { useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import Output from "./Output";
@@ -10,7 +11,7 @@ import Tests from "./Tests";
 import "react-grid-layout/css/styles.css";
 import "./App.css";
 
-export const API_URL = "http://192.168.1.8:3000";
+export const API_URL = "http://192.168.53.124:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
@@ -30,13 +31,38 @@ function App() {
 
   const onChange = React.useCallback((value, viewUpdate) => {
     // TODO: Track every change
-    console.log("value:", value);
+    // console.log("value:", value);
+    setCode(value);
   }, []);
 
   const runCode = () => {
     // You can implement code execution here and update the 'output' state.
     // For simplicity, let's assume it's just echoing the code.
-    setOutput(code);
+    // setOutput(code);
+
+    axios
+      .post(
+        `${API_URL}/execution/python`,
+        {
+          code: code,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data.result);
+        setOutput(res.data.result);
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          setOutput(error.message);
+        } else {
+          setOutput("connection failed");
+        }
+      });
   };
 
   return (
