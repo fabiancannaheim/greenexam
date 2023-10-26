@@ -1,4 +1,4 @@
-import { javascript } from "@codemirror/lang-javascript";
+import { java } from "@codemirror/lang-java";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
@@ -11,7 +11,7 @@ import Tests from "./Tests";
 import "react-grid-layout/css/styles.css";
 import "./App.css";
 
-export const API_URL = "http://192.168.53.124:3000";
+export const API_URL = "http://192.168.1.8:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
@@ -22,12 +22,17 @@ function App() {
     { i: "4", x: 6, y: 6, w: 6, h: 2, minW: 2 },
   ];
 
+  const [selectedLanguage, setSelectedLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
   const tests = [
     "Test 1: Check for syntax errors",
     "Test 2: Check for logic errors",
   ];
+
+  const handleLanguageChange = (e) => {
+    setSelectedLanguage(e.target.value);
+  };
 
   const onChange = React.useCallback((value, viewUpdate) => {
     // TODO: Track every change
@@ -42,7 +47,7 @@ function App() {
 
     axios
       .post(
-        `${API_URL}/execution/python`,
+        `${API_URL}/execution/${selectedLanguage}`,
         {
           code: code,
         },
@@ -67,6 +72,15 @@ function App() {
 
   return (
     <div className="app">
+      <div>
+        <h1>Select Your Preferred Language</h1>
+        <select value={selectedLanguage} onChange={handleLanguageChange}>
+          <option value="python" select>
+            Python
+          </option>
+          <option value="java">Java</option>
+        </select>
+      </div>
       <ResponsiveGridLayout
         className="layout"
         layouts={{ lg: layout }}
@@ -83,7 +97,7 @@ function App() {
         <div key="2" className="resizable-tile">
           <CodeMirror
             value=""
-            extensions={python()}
+            extensions={[python(), java()]}
             onChange={onChange}
             height="500px"
           />
