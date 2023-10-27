@@ -11,7 +11,7 @@ import Tests from "./Tests";
 import "react-grid-layout/css/styles.css";
 import "./App.css";
 
-export const API_URL = "http://192.168.1.8:3000";
+export const API_URL = "http://192.168.53.124:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
@@ -35,16 +35,10 @@ function App() {
   };
 
   const onChange = React.useCallback((value, viewUpdate) => {
-    // TODO: Track every change
-    // console.log("value:", value);
     setCode(value);
   }, []);
 
   const runCode = () => {
-    // You can implement code execution here and update the 'output' state.
-    // For simplicity, let's assume it's just echoing the code.
-    // setOutput(code);
-
     axios
       .post(
         `${API_URL}/execution/${selectedLanguage}`,
@@ -58,22 +52,25 @@ function App() {
         }
       )
       .then((res) => {
-        console.log(res.data.result);
         setOutput(res.data.result);
       })
       .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          setOutput(error.message);
+        if (error.response.data.error) {
+          setOutput(error.response.data.error);
         } else {
-          setOutput("connection failed");
+          if (axios.isAxiosError(error)) {
+            setOutput(error.message);
+          } else {
+            setOutput("connection failed");
+          }
         }
       });
   };
 
   return (
     <div className="app">
-      <div>
-        <h1>Select Your Preferred Language</h1>
+      <div className="langSelect">
+        <h3>Select Language</h3>
         <select value={selectedLanguage} onChange={handleLanguageChange}>
           <option value="python" select>
             Python

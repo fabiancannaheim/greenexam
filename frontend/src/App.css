@@ -134,3 +134,10 @@ li {
   grid-gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
+
+.langSelect {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  padding: 1rem;
+}
