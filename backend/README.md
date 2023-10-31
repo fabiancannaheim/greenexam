@@ -21,6 +21,13 @@ npm install
 ```
 Rename .env.example to .env and fill in the necessary environment variables. Make sure to never commit the .env file.
 
+Make sure that you have docker installed and navigate to /docker
+Run the init.sh file:
+```
+./init.sh
+```
+This creates two docker instances responsible for executing code.
+
 Run the database reset and test script:
 ```
 ./reset_and_test.sh
