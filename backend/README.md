@@ -79,6 +79,16 @@ curl    -X POST http://localhost:3000/execution/java
         -H "Content-Type: application/json" 
         -d '{"code": "public class HelloWorld { public static void main(String[] args) { System.out.println(\"Hello World\"); }}"}'
 
+#### System Metrics
+
+<ul>
+    <li>Usage of <b>all observed metrics</b>: <i>GET /metrics</i></li>
+    <li>Usage of <b>RAM*</b>: <i>GET /metrics/cpu</i></li>
+    <li>Usage of <b>CPU*</b>: <i>GET /metrics/ram</i></li>
+    <li><b>Prometheus</b>: <i>GET /metrics/prometheus</i></li>
+</ul>
+
+<i>*Fractional percentages, representing the proportion of total available resources currently in use</i>
 
 #### Programming Languages
 

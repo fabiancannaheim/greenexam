@@ -1,49 +1,56 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require("express")
+const bodyParser = require("body-parser")
+const cors = require("cors")
+const promClient = require('prom-client')
 
-const authRoutes = require("./routes/authRoutes");
-const progLangRoutes = require("./routes/progLangRoutes");
-const userRoutes = require("./routes/userRoutes");
-const examRoutes = require("./routes/examRoutes");
-const questionRoutes = require("./routes/questionRoutes");
-const hintRoutes = require("./routes/hintRoutes");
-const answerRoutes = require("./routes/answerRoutes");
-const executionRoutes = require("./routes/executionRoutes");
+const authRoutes = require("./routes/authRoutes")
+const progLangRoutes = require("./routes/progLangRoutes")
+const userRoutes = require("./routes/userRoutes")
+const examRoutes = require("./routes/examRoutes")
+const questionRoutes = require("./routes/questionRoutes")
+const hintRoutes = require("./routes/hintRoutes")
+const answerRoutes = require("./routes/answerRoutes")
+const executionRoutes = require("./routes/executionRoutes")
+const metricsRoutes = require("./routes/metricsRoutes")
 
-const sessionMiddleware = require("./middleware/sessionMiddleware");
-const errorHandlingMiddleware = require("./middleware/errorHandlingMiddleware");
+const sessionMiddleware = require("./middleware/sessionMiddleware")
+const errorHandlingMiddleware = require("./middleware/errorHandlingMiddleware")
 
-const app = express();
-const PORT = 3000;
+const app = express()
+const PORT = 3000
+
+const register = new promClient.Registry()
+promClient.collectDefaultMetrics({ register })
+
 
 // Add CORS to all requests
-app.use(cors());
+app.use(cors())
 
 // Utils
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
 // Before middleware
-app.use(sessionMiddleware);
+app.use(sessionMiddleware)
 
 // Routes
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/exams", examRoutes);
-app.use("/questions", questionRoutes);
-app.use("/hints", hintRoutes);
-app.use("/answers", answerRoutes);
-app.use("/proglang", progLangRoutes);
-app.use("/execution", executionRoutes);
+app.use("/auth", authRoutes)
+app.use("/users", userRoutes)
+app.use("/exams", examRoutes)
+app.use("/questions", questionRoutes)
+app.use("/hints", hintRoutes)
+app.use("/answers", answerRoutes)
+app.use("/proglang", progLangRoutes)
+app.use("/execution", executionRoutes)
+app.use("/metrics", metricsRoutes)
 
 app.get("/", (req, res) => {
-  res.send("GreenExam");
-});
+  res.send("GreenExam")
+})
 
 // After middleware
-app.use(errorHandlingMiddleware);
+app.use(errorHandlingMiddleware)
 
 // Server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+  console.log(`Server is running on port ${PORT}`)
+})
