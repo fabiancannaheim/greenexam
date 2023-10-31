@@ -11,7 +11,7 @@ import Tests from "./Tests";
 import "react-grid-layout/css/styles.css";
 import "./App.css";
 
-export const API_URL = "http://192.168.53.124:3000";
+export const API_URL = "http://192.168.1.8:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
@@ -20,11 +20,13 @@ function App() {
     { i: "2", x: 6, y: 0, w: 8, h: 4, minW: 2 },
     { i: "3", x: 0, y: 6, w: 6, h: 2, minW: 2 },
     { i: "4", x: 6, y: 6, w: 6, h: 2, minW: 2 },
+    { i: "5", x: 0, y: 6, w: 6, h: 2, minW: 2 },
   ];
 
   const [selectedLanguage, setSelectedLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
+  const [metrics, setMetrics] = useState("");
   const tests = [
     "Test 1: Check for syntax errors",
     "Test 2: Check for logic errors",
@@ -37,6 +39,30 @@ function App() {
   const onChange = React.useCallback((value, viewUpdate) => {
     setCode(value);
   }, []);
+
+  const getMetrics = () => {
+    axios
+      .get(`${API_URL}/metrics`)
+      .then((res) => {
+        setMetrics(JSON.stringify(res.data));
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+        }
+      });
+
+    axios
+      .get(`${API_URL}/metrics/prometheus`)
+      .then((res) => {
+        setMetrics((prev) => prev + " --- " + JSON.stringify(res.data));
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+        }
+      });
+  };
 
   const runCode = () => {
     axios
@@ -109,6 +135,10 @@ function App() {
           <Output output={output} />
           <button onClick={runCode}>Submit Code</button>
           <span className="react-grid-dragHandle">[DRAG]</span>
+        </div>
+        <div key="5" className="resizable-tile">
+          <div>{metrics}</div>
+          <button onClick={getMetrics}>Get Metrics</button>
         </div>
       </ResponsiveGridLayout>
     </div>
