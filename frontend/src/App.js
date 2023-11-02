@@ -1,19 +1,22 @@
+import "bootstrap/dist/css/bootstrap.css";
+
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "react-grid-layout/css/styles.css";
+import "./App.css";
+import "./custom.scss";
+
 import { java } from "@codemirror/lang-java";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
 import React, { useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
+import { Header } from "./Header";
 import Output from "./Output";
 import Prompt from "./Prompt";
 import Tests from "./Tests";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "react-grid-layout/css/styles.css";
-import "./App.css";
-import "./custom.scss";
-
-export const API_URL = "http://192.168.1.8:3000";
+export const API_URL = "http://192.168.53.217:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
@@ -96,56 +99,59 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <div className="langSelect">
-        <h3>Select Language</h3>
-        <select value={selectedLanguage} onChange={handleLanguageChange}>
-          <option value="python" select>
-            Python
-          </option>
-          <option value="java">Java</option>
-        </select>
+    <>
+      <Header />
+      <div className="app">
+        <div className="langSelect">
+          <h3>Select Language</h3>
+          <select value={selectedLanguage} onChange={handleLanguageChange}>
+            <option value="python" select>
+              Python
+            </option>
+            <option value="java">Java</option>
+          </select>
+        </div>
+        <ResponsiveGridLayout
+          className="layout"
+          layouts={{ lg: layout }}
+          // breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+          cols={{ lg: 12, md: 12, sm: 6, xs: 2, xxs: 1 }}
+          // rowHeight={100}
+          // width={1200}
+          draggableHandle=".react-grid-dragHandle"
+        >
+          <div key="1" className="resizable-tile">
+            <Prompt promptText="Write a function that adds two numbers." />
+            <span className="react-grid-dragHandle">[DRAG]</span>
+          </div>
+          <div key="2" className="resizable-tile">
+            <CodeMirror
+              value=""
+              extensions={[python(), java()]}
+              onChange={onChange}
+              height="500px"
+            />
+            <button onClick={runCode}>Run Code</button>
+            <span className="react-grid-dragHandle">[DRAG]</span>
+          </div>
+          <div key="3" className="resizable-tile">
+            <Tests tests={tests} />
+            <span className="react-grid-dragHandle">[DRAG]</span>
+          </div>
+          <div key="4" className="resizable-tile">
+            <Output output={output} />
+            <button onClick={runCode}>Submit Code</button>
+            <span className="react-grid-dragHandle">[DRAG]</span>
+          </div>
+          <div key="5" className="resizable-tile">
+            <div>{metrics}</div>
+            <button onClick={getMetrics} className="btn btn-primary">
+              Get Metrics
+            </button>
+          </div>
+        </ResponsiveGridLayout>
       </div>
-      <ResponsiveGridLayout
-        className="layout"
-        layouts={{ lg: layout }}
-        // breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        cols={{ lg: 12, md: 12, sm: 6, xs: 2, xxs: 1 }}
-        // rowHeight={100}
-        // width={1200}
-        draggableHandle=".react-grid-dragHandle"
-      >
-        <div key="1" className="resizable-tile">
-          <Prompt promptText="Write a function that adds two numbers." />
-          <span className="react-grid-dragHandle">[DRAG]</span>
-        </div>
-        <div key="2" className="resizable-tile">
-          <CodeMirror
-            value=""
-            extensions={[python(), java()]}
-            onChange={onChange}
-            height="500px"
-          />
-          <button onClick={runCode}>Run Code</button>
-          <span className="react-grid-dragHandle">[DRAG]</span>
-        </div>
-        <div key="3" className="resizable-tile">
-          <Tests tests={tests} />
-          <span className="react-grid-dragHandle">[DRAG]</span>
-        </div>
-        <div key="4" className="resizable-tile">
-          <Output output={output} />
-          <button onClick={runCode}>Submit Code</button>
-          <span className="react-grid-dragHandle">[DRAG]</span>
-        </div>
-        <div key="5" className="resizable-tile">
-          <div>{metrics}</div>
-          <button onClick={getMetrics} className="btn btn-primary">
-            Get Metrics
-          </button>
-        </div>
-      </ResponsiveGridLayout>
-    </div>
+    </>
   );
 }
 export default App;
