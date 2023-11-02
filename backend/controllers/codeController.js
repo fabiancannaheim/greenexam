@@ -156,8 +156,10 @@ const executeJava = (code, callback) => {
         return callback('No public class found in submitted code.')
     }
 
-    const className = classNameMatch[1]
+    const className = classNameMatch[1] + uuidv4().replaceAll('-', '')
     const dir = path.join(__dirname, '../tmp')
+
+    code = code.replace(classNameMatch[1], className)
 
     const filename = `${className}.java`
     const filepath = path.join(dir, filename)
@@ -206,7 +208,7 @@ const executeJava = (code, callback) => {
     process.stderr.on('data', (data) => error += data.toString())
 
     process.on('close', (code) => {
-        fs.unlinkSync(filepath)
+        if (fs.existsSync(filepath)) fs.unlinkSync(filepath)
         callback(error, result)
     })
 
@@ -214,7 +216,7 @@ const executeJava = (code, callback) => {
 
 const executeC = (code, callback) => {
 
-    const filename = 'program.c';
+    const filename = `program-${uuidv4()}.c`;
     const dir = path.join(__dirname, '../tmp');
 
     const filepath = path.join(dir, filename);
@@ -225,11 +227,11 @@ const executeC = (code, callback) => {
     let compileOption = gcc.MAX_OPTIMIZATION
 
     // Adjust GCC compile options based on system load
-    if (CPU_LOAD > 0.7 || RAM_LOAD > 0.7) {
+    if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
         compileOption = gcc.NO_OPTIMIZATION
-    } else if (CPU_LOAD > 0.5 || RAM_LOAD > 0.5) {
+    } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
         compileOption = gcc.MORE_OPTIMIZATION
-    } else if (CPU_LOAD > 0.3 || RAM_LOAD > 0.3) {
+    } else if (global.CPU_LOAD > 0.3 || global.RAM_LOAD > 0.3) {
         compileOption = gcc.MODERATE_OPTIMIZATION
     }
 
@@ -253,7 +255,7 @@ const executeC = (code, callback) => {
     process.stderr.on('data', (data) => error += data.toString());
 
     process.on('close', (code) => {
-        fs.unlinkSync(filepath);
+        if (fs.existsSync(filepath)) fs.unlinkSync(filepath)
         callback(error, result);
     });
 };
