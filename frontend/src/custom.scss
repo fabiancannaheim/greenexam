@@ -1,0 +1,17 @@
+// include Bootstrap Partials
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+
+/* color palette: https://colorhunt.co/palette/313866504099974ec3fe7be5 */
+$custom-colors: (
+  "yt-red": #ff0000,
+  "sptf-green": #1db954,
+  "primary": #313866,
+  "secondary": #504099,
+  "tertiary": #974ec3,
+  "quaternary": #fe7be5,
+);
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+// include Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";

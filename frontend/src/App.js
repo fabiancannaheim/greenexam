@@ -8,16 +8,18 @@ import Output from "./Output";
 import Prompt from "./Prompt";
 import Tests from "./Tests";
 
+import "bootstrap/dist/css/bootstrap.css";
 import "react-grid-layout/css/styles.css";
 import "./App.css";
+import "./custom.scss";
 
 export const API_URL = "http://192.168.1.8:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
   const layout = [
-    { i: "1", x: 0, y: 0, w: 4, h: 4, minW: 2 },
-    { i: "2", x: 6, y: 0, w: 8, h: 4, minW: 2 },
+    { i: "1", x: 0, y: 0, w: 6, h: 4, minW: 2 },
+    { i: "2", x: 6, y: 0, w: 6, h: 4, minW: 2 },
     { i: "3", x: 0, y: 6, w: 6, h: 2, minW: 2 },
     { i: "4", x: 6, y: 6, w: 6, h: 2, minW: 2 },
     { i: "5", x: 0, y: 6, w: 6, h: 2, minW: 2 },
@@ -138,7 +140,9 @@ function App() {
         </div>
         <div key="5" className="resizable-tile">
           <div>{metrics}</div>
-          <button onClick={getMetrics}>Get Metrics</button>
+          <button onClick={getMetrics} className="btn btn-primary">
+            Get Metrics
+          </button>
         </div>
       </ResponsiveGridLayout>
     </div>
