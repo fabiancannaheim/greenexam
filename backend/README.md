@@ -89,6 +89,10 @@ curl    -X POST http://localhost:3000/code/execute/java
         -H "Content-Type: application/json" 
         -d '{"code": "public class HelloWorld { public static void main(String[] args) { System.out.println(\"Hello World\"); }}"}'
 
+curl    -X POST http://localhost:3000/code/execute/C 
+        -H "Content-Type:application/json" 
+        -d "{\"code\":\"#include <stdio.h>\\nint main() {\\nprintf(\\\"Hello World\\\");\\nreturn 0;\\n}\"}"
+
 curl    -X POST http://localhost:3000/code/autocomplete/python 
         -H "Content-Type:application/json" 
         -d '{"code":"pri", "line": 0, "col": 3 }'

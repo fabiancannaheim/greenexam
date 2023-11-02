@@ -15,6 +15,9 @@ const executeCode = (req, res) => {
         case 'java':
             executeJava(code, (error, result) => handleExecutionResponse(error, result, res))
             break
+        case 'C':
+            executeC(code, (error, result) => handleExecutionResponse(error, result, res))
+            break
         default:
             res.status(400).send('Unsupported language.')
     }
@@ -172,6 +175,43 @@ const executeJava = (code, callback) => {
     })
 
 }
+
+const executeC = (code, callback) => {
+
+    const filename = 'program.c';
+    const dir = path.join(__dirname, '../tmp');
+
+    const filepath = path.join(dir, filename);
+
+    fs.writeFileSync(filepath, code);
+
+    // Choose the compilation option
+    const compileOption = '-O2'; // Example: '-O2' for a balance of optimization and resource usage
+
+    const dockerCommand = [
+        'docker', 'run', '--rm',
+        '--user=myuser',
+        '--memory=256m',
+        '--cpus=1.0',
+        '--network=none',
+        '--security-opt=no-new-privileges',
+        '-v', `${dir}:/app:rw`,
+        'cexe', 'sh', '-c', `gcc ${compileOption} ${filename} -o program && ./program`
+    ];
+
+    const process = spawn(dockerCommand.shift(), dockerCommand);
+
+    let result = '';
+    let error = '';
+
+    process.stdout.on('data', (data) => result += data.toString());
+    process.stderr.on('data', (data) => error += data.toString());
+
+    process.on('close', (code) => {
+        fs.unlinkSync(filepath);
+        callback(error, result);
+    });
+};
 
 
 const handleExecutionResponse = (error, result, res) => {

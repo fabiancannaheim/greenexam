@@ -9,6 +9,7 @@ image_exists() {
 # Path to the directories containing the Dockerfiles
 py_dockerfile_dir="python"
 java_dockerfile_dir="java"
+c_dockerfile_dir="C"
 
 py_autocomp_dockerfile_dir="./python_autocomp"
 
@@ -26,6 +27,14 @@ if image_exists "javaexe"; then
 else
     echo "Building Java execution image 'javaexe'..."
     docker build -t javaexe "$java_dockerfile_dir"
+fi
+
+# Check for the C execution image
+if image_exists "cexe"; then
+    echo "C execution image 'cexe' already exists."
+else
+    echo "Building C execution image 'cexe'..."
+    docker build -t cexe "$c_dockerfile_dir"
 fi
 
 # Check for the Java execution image

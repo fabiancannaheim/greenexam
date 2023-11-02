@@ -97,6 +97,7 @@ INSERT INTO users (username, email, password, role) VALUES ('mohamsch_student', 
 -- Programming languages
 INSERT INTO programming_languages (name, compiler, executor) VALUES ('Java', '/bin/javac', '/bin/java');
 INSERT INTO programming_languages (name, compiler, executor) VALUES ('Python', '', '/bin/python3');
+INSERT INTO programming_languages (name, compiler, executor) VALUES ('C', '/bin/gcc', '');
 
 -- Exams (for each admin one; both in Java)
 INSERT INTO exams (title, user_id) VALUES ('Programmieren 1', 1);
