@@ -21,14 +21,16 @@ const updateSystemMetrics = () => {
     const usedMemoryInMB = usedMemory / 1024 / 1024
     const memUsage = Number((usedMemory / totalMemory).toFixed(2))
     const cpuUsage = os.loadavg()[0]
+    const cpuCores = os.cpus().length
+    const cpuLoad = cpuUsage / cpuCores
 
     // Set Gauge for API access
-    cpuUsageGauge.set(cpuUsage)
+    cpuUsageGauge.set(cpuLoad)
     ramUsageGauge.set(memUsage)
 
     // Set global variable for internal access
     global.RAM_LOAD = memUsage
-    global.CPU_LOAD = cpuUsage
+    global.CPU_LOAD = cpuLoad
 
 };
 
