@@ -1,1 +1,0 @@
-public class Test84d18f42fc6d49a9adb8d1953880d131 { public static void main(String[] args) { System.out.println("Hello World and Java!"); } }
