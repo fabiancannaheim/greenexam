@@ -5,7 +5,7 @@ const { spawn } = require('child_process')
 
 const executeCode = (req, res) => {
 
-    const lang = req.params.language
+    const lang = req.params.lang
     const code = req.body.code
 
     switch (lang) {
@@ -20,9 +20,73 @@ const executeCode = (req, res) => {
     }
 }
 
-const handleExecutionResponse = (error, result, res) => {
-    if (error) return res.status(500).json({ error })
-    res.json({ result })
+const autocomplete = (req, res) => {
+
+    const lang = req.params.lang
+    const code = req.body.code
+    const line = req.body.line
+    const col = req.body.col
+
+    switch (lang) {
+        case 'python':
+            autocompletePython(code, line, col, (error, result) => handleExecutionResponse(error, result, res))
+            break
+        case 'java':
+            autocompleteJava(code, line, col, (error, result) => handleExecutionResponse(error, result, res))
+            break
+        default:
+            res.status(400).send('Unsupported language.')
+    }
+}
+
+const autocompletePython = (code, line, col, callback) => {
+
+    const input = JSON.stringify({ code, line, col })
+
+    // Command to run Jedi inside a Docker container
+    const dockerCommand = [
+        'docker', 'run', '--rm',
+        '--user=myuser',
+        '--read-only',
+        '--memory=256m',
+        '--cpus=1.0',
+        '--network=none',
+        '--security-opt=no-new-privileges',
+        '-i', // Run container in interactive mode to allow input
+        'pyautocomp'
+    ]
+
+    // Spawn Docker process
+    const process = spawn(dockerCommand.shift(), dockerCommand)
+
+    let result = ''
+    let error = ''
+
+    process.stdout.on('data', (data) => {
+        result += data.toString()
+    });
+    process.stderr.on('data', (data) => {
+        error += data.toString()
+    })
+
+    process.on('close', (code) => {
+        try {
+            const suggestions = JSON.parse(result);  
+            callback(null, suggestions);
+        } catch (error) {
+            console.error("Parsing Error:", error)
+            callback(error, null);
+        }
+    })
+
+    // Send input data to Docker process
+    process.stdin.write(input)
+    process.stdin.end()
+
+}
+
+const autocompleteJava = (code, line, col, callback) => {
+    throw Error("Autocompletion not supported for Java")
 }
 
 const executePython = (code, callback) => {
@@ -109,30 +173,10 @@ const executeJava = (code, callback) => {
 
 }
 
-const executeJavaOld = (code, callback) => {
 
-    const classNameMatch = code.match(/public\s+class\s+(\w+)/)
-    if (!classNameMatch) return callback('No public class found in submitted code.')
+const handleExecutionResponse = (error, result, res) => {
+    if (error) return res.status(500).json({ error })
+    res.json({ result })
+}
 
-    const className = classNameMatch[1]
-    const fileName = `${className}.java`
-    fs.writeFileSync(fileName, code)
-
-    const compile = spawn('javac', [fileName])
-
-    compile.on('close', (code) => {
-
-        if (code !== 0) return callback('Compilation failed.')
-
-        let result = ''
-        let error = ''
-        const process = spawn('java', [className])
-
-        process.stdout.on('data', (data) => result += data.toString())
-        process.stderr.on('data', (data) => error += data.toString())
-
-        process.on('close', (code) => callback(error, result))
-    });
-};
-
-module.exports = { executeCode }
+module.exports = { executeCode, autocomplete }

@@ -10,7 +10,7 @@ const examRoutes = require("./routes/examRoutes")
 const questionRoutes = require("./routes/questionRoutes")
 const hintRoutes = require("./routes/hintRoutes")
 const answerRoutes = require("./routes/answerRoutes")
-const executionRoutes = require("./routes/executionRoutes")
+const codeRoutes = require("./routes/codeRoutes")
 const metricsRoutes = require("./routes/metricsRoutes")
 
 const sessionMiddleware = require("./middleware/sessionMiddleware")
@@ -40,7 +40,7 @@ app.use("/questions", questionRoutes)
 app.use("/hints", hintRoutes)
 app.use("/answers", answerRoutes)
 app.use("/proglang", progLangRoutes)
-app.use("/execution", executionRoutes)
+app.use("/code", codeRoutes)
 app.use("/metrics", metricsRoutes)
 
 app.get("/", (req, res) => {

@@ -73,18 +73,30 @@ The application requires specific environment variables to run correctly. These 
 #### Code Execution
 
 <ul>
-    <li>Code <b>execution</b>: <i>POST /execution/:language</i></li>
+    <li>Code <b>execution</b>: <i>POST /code/execute/:language</i></li>
+    <li>Code <b>autocompletion*</b>: <i>POST /code/autocomplete/:language</i></li>
 </ul>
+
+* Only supported for python
 
 **Examples with curl**
 
-curl    -X POST http://localhost:3000/execution/python
+curl    -X POST http://localhost:3000/code/execute/python
         -H "Content-Type: application/json"
         -d '{"code": "print(\"Hello World\")"}'
 
-curl    -X POST http://localhost:3000/execution/java 
+curl    -X POST http://localhost:3000/code/execute/java 
         -H "Content-Type: application/json" 
         -d '{"code": "public class HelloWorld { public static void main(String[] args) { System.out.println(\"Hello World\"); }}"}'
+
+curl    -X POST http://localhost:3000/code/autocomplete/python 
+        -H "Content-Type:application/json" 
+        -d '{"code":"pri", "line": 0, "col": 3 }'
+
+curl    -X POST http://localhost:3000/code/autocomplete/python 
+        -H "Content-Type:application/json" 
+        -d '{"code": "import os\nos.", "line": 1, "col": 2 }'
+
 
 #### System Metrics
 

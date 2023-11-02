@@ -10,6 +10,8 @@ image_exists() {
 py_dockerfile_dir="python"
 java_dockerfile_dir="java"
 
+py_autocomp_dockerfile_dir="./python_autocomp"
+
 # Check for the Python execution image
 if image_exists "pyexe"; then
     echo "Python execution image 'pyexe' already exists."    
@@ -24,4 +26,12 @@ if image_exists "javaexe"; then
 else
     echo "Building Java execution image 'javaexe'..."
     docker build -t javaexe "$java_dockerfile_dir"
+fi
+
+# Check for the Java execution image
+if image_exists "pyautocomp"; then
+    echo "Python autocompletion image 'pyautocomp' already exists."
+else
+    echo "Building Python autocompletion image 'pyautocomp'..."
+    docker build -t pyautocomp "$py_autocomp_dockerfile_dir"
 fi
