@@ -14,14 +14,22 @@ const ramUsageGauge = new promClient.Gauge({
 })
 
 const updateSystemMetrics = () => {
+
     const totalMemory = os.totalmem()
     const freeMemory = os.freemem()
     const usedMemory = totalMemory - freeMemory
     const usedMemoryInMB = usedMemory / 1024 / 1024
     const memUsage = Number((usedMemory / totalMemory).toFixed(2))
     const cpuUsage = os.loadavg()[0]
+
+    // Set Gauge for API access
     cpuUsageGauge.set(cpuUsage)
     ramUsageGauge.set(memUsage)
+
+    // Set global variable for internal access
+    global.RAM_LOAD = memUsage
+    global.CPU_LOAD = cpuUsage
+
 };
 
 // Update metrics every 5 seconds

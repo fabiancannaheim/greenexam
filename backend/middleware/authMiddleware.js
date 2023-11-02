@@ -3,7 +3,6 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
 const verifySession = (req, res, next) => {
-  console.log(req.session)
   if (req.session.isAuthenticated) return next() 
   res.status(401).send({ error: 'Unauthorized' });
 }

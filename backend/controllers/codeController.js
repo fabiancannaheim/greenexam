@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const gcc = require('../utils/gccOptions')
 const { v4: uuidv4 } = require('uuid')
 const { spawn } = require('child_process')
 
@@ -103,13 +104,26 @@ const executePython = (code, callback) => {
     // Write code to temp file
     fs.writeFileSync(filepath, code)
 
+    // Adjust Docker container resource limits based on system load
+    let memoryLimit = '256m';
+    let cpuLimit = '1.0';
+    if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
+        // High load
+        memoryLimit = '128m';
+        cpuLimit = '0.5';
+    } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
+        // Moderate load
+        memoryLimit = '192m';
+        cpuLimit = '0.75';
+    }
+
     // Command to run the Python script inside a Docker container
     const dockerCommand = [
         'docker', 'run', '--rm',
         '--user=myuser',
         '--read-only',
-        '--memory=256m',
-        '--cpus=1.0',
+        `--memory=${memoryLimit}`,
+        `--cpus=${cpuLimit}`,
         '--network=none',
         '--security-opt=no-new-privileges',
         `-v`, `${filepath}:/app/temp_user_code.py:ro`,
@@ -150,6 +164,28 @@ const executeJava = (code, callback) => {
 
     fs.writeFileSync(filepath, code)
 
+    // JVM options based on CPU and RAM load
+    let jvmOptions = '';
+
+    if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
+        // High load, reduce resource usage
+        // Serial garbage collector -> less memory
+        // Smaller thread stack size to reduce memory
+        // JIT Compilation turned off to reduce CPU usage
+        // Disabled explicit garbage collection to avoid overhead
+        jvmOptions = '-Xmx128m -XX:CICompilerCount=1 -Xss256k -XX:+UseSerialGC -Djava.compiler=NONE -XX:+DisableExplicitGC';
+    } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
+        // Moderate load
+        // Parallel garbeage collector 
+        // larger thread stack size
+        jvmOptions = '-Xmx192m -XX:CICompilerCount=2 -Xss512k -XX:+UseParallelGC';
+    } else {
+        // Low load, allocate more resources
+        // G1 garbage collector for high throughput and low pause times
+        // Higher thread stack size
+        jvmOptions = '-Xmx256m -XX:CICompilerCount=4 -Xss1024k -XX:+UseG1GC';
+    }
+
     const dockerCommand = [
         'docker', 'run', '--rm',
         '--user=myuser',
@@ -158,7 +194,7 @@ const executeJava = (code, callback) => {
         '--network=none',
         '--security-opt=no-new-privileges',
         '-v', `${dir}:/app:rw`,
-        'javaexe', 'sh', '-c', `cd /app && javac ${className}.java && java ${className}`
+        'javaexe', 'sh', '-c', `cd /app && javac ${className}.java && java ${jvmOptions} ${className}`
     ]
 
     const process = spawn(dockerCommand.shift(), dockerCommand)
@@ -185,8 +221,17 @@ const executeC = (code, callback) => {
 
     fs.writeFileSync(filepath, code);
 
-    // Choose the compilation option
-    const compileOption = '-O2'; // Example: '-O2' for a balance of optimization and resource usage
+    // Default optimization option
+    let compileOption = gcc.MAX_OPTIMIZATION
+
+    // Adjust GCC compile options based on system load
+    if (CPU_LOAD > 0.7 || RAM_LOAD > 0.7) {
+        compileOption = gcc.NO_OPTIMIZATION
+    } else if (CPU_LOAD > 0.5 || RAM_LOAD > 0.5) {
+        compileOption = gcc.MORE_OPTIMIZATION
+    } else if (CPU_LOAD > 0.3 || RAM_LOAD > 0.3) {
+        compileOption = gcc.MODERATE_OPTIMIZATION
+    }
 
     const dockerCommand = [
         'docker', 'run', '--rm',
