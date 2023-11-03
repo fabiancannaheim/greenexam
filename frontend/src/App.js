@@ -21,8 +21,8 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
   const layout = [
-    { i: "1", x: 0, y: 0, w: 6, h: 4, minW: 2 },
-    { i: "2", x: 6, y: 0, w: 6, h: 4, minW: 2 },
+    { i: "1", x: 0, y: 0, w: 4, h: 4, minW: 2 },
+    { i: "2", x: 4, y: 0, w: 8, h: 4, minW: 2 },
     { i: "3", x: 0, y: 6, w: 6, h: 2, minW: 2 },
     { i: "4", x: 6, y: 6, w: 6, h: 2, minW: 2 },
     { i: "5", x: 0, y: 6, w: 6, h: 2, minW: 2 },
@@ -105,9 +105,7 @@ function App() {
         <div className="langSelect">
           <h3>Select Language</h3>
           <select value={selectedLanguage} onChange={handleLanguageChange}>
-            <option value="python" select>
-              Python
-            </option>
+            <option value="python">Python</option>
             <option value="java">Java</option>
           </select>
         </div>
