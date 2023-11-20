@@ -9,21 +9,23 @@ const logLevels = {
     warn: 1,
     info: 2,
     debug: 3,
-    trace: 4
+    trace: 4,
+    sys: 5
   },
   colors: {
     error: 'red',
     warn: 'yellow',
     info: 'green',
     debug: 'blue',
-    trace: 'magenta'
+    trace: 'magenta',
+    sys: 'tile'
   }
 }
 
 const customFormat = winston.format.printf(({ timestamp, level, message, ...metadata }) => {
   let msg = `${timestamp} [${level.toUpperCase()}]: ${message}`
   if (Object.keys(metadata).length) {
-    msg += ` ${JSON.stringify(metadata)}`
+    msg += JSON.stringify(metadata)
   }
   return msg
 });
@@ -58,6 +60,10 @@ const logger = winston.createLogger({
     new winston.transports.File({ 
       filename: path.join(__dirname, '../logs/trace.log'),
       level: 'trace' 
+    }),
+    new winston.transports.File({ 
+      filename: path.join(__dirname, '../logs/sys.log'),
+      level: 'sys' 
     }),
     new winston.transports.File({ 
       filename: path.join(__dirname, '../logs/combined.log') 

@@ -7,8 +7,6 @@ const logger = require('../utils/logger')
 
 const executeCode = (req, res) => {
 
-    logger.trace({ message: 'Code Execution Request', CPULoad: global.CPU_LOAD, RAMLoad: global.RAM_LOAD })
-
     const lang = req.params.lang
     const code = req.body.code
 
@@ -80,7 +78,7 @@ const executePython = (code, callback) => {
         // Callback with the results
         callback(error, result)
 
-        logger.trace({ message: 'executePython()', CPULimit: cpuLimit, RAMLimit: memoryLimit, result: result, error: error})
+        logger.trace({ message: 'Python execution', result: result, error: error})
     
     })
 
@@ -158,7 +156,7 @@ const executeJava = (code, callback) => {
 
         callback(error, result)
     
-        logger.trace({ message: 'executeJava()', Options: jvmOptions, result: result, error: error })
+        logger.trace({ message: 'Java Execution', Options: jvmOptions, result: result, error: error })
     })
 
 }
@@ -217,7 +215,7 @@ const executeC = (code, callback) => {
         
         callback(error, result);
 
-        logger.trace({ message: 'executeC()', gccOption: compileOption, result: result, error: error })
+        logger.trace({ message: 'C Execution', gccOption: compileOption, result: result, error: error })
     })
 
 };

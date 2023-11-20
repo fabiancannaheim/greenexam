@@ -1,5 +1,6 @@
+const os = require('os')
 const promClient = require('prom-client')
-const os = require('os');
+const { loadManager, FeatureState } = require('../utils/LoadManager')
 
 const cpuUsageGauge = new promClient.Gauge({
     name: 'cpu_usage',
@@ -31,6 +32,8 @@ const updateSystemMetrics = () => {
     // Set global variable for internal access
     global.RAM_LOAD = memUsage
     global.CPU_LOAD = cpuLoad
+
+    loadManager.updateState(cpuLoad, memUsage)
 
 }
 
