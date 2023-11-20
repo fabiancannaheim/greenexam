@@ -3,6 +3,7 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 const logger = require('./utils/logger')
 const promClient = require('prom-client')
+const loadManager = require('./utils/LoadManager')
 
 const authRoutes = require("./routes/authRoutes")
 const progLangRoutes = require("./routes/progLangRoutes")
@@ -13,6 +14,7 @@ const hintRoutes = require("./routes/hintRoutes")
 const answerRoutes = require("./routes/answerRoutes")
 const codeRoutes = require("./routes/codeRoutes")
 const metricsRoutes = require("./routes/metricsRoutes")
+const stateRoutes = require("./routes/stateRoutes")
 
 const sessionMiddleware = require("./middleware/sessionMiddleware")
 const errorHandlingMiddleware = require("./middleware/errorHandlingMiddleware")
@@ -43,6 +45,7 @@ app.use("/answers", answerRoutes)
 app.use("/proglang", progLangRoutes)
 app.use("/code", codeRoutes)
 app.use("/metrics", metricsRoutes)
+app.use("/states", stateRoutes)
 
 app.get("/", (req, res) => {
   res.send("GreenExam")
