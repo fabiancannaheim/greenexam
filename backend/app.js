@@ -1,6 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
+const logger = require('./utils/logger')
 const promClient = require('prom-client')
 
 const authRoutes = require("./routes/authRoutes")

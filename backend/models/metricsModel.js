@@ -32,7 +32,7 @@ const updateSystemMetrics = () => {
     global.RAM_LOAD = memUsage
     global.CPU_LOAD = cpuLoad
 
-};
+}
 
 // Update metrics every 5 seconds
 setInterval(updateSystemMetrics, 500)

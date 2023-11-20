@@ -1,5 +1,37 @@
 require('dotenv').config()
 
+
+const throttle = (minIntervalInMillis) => {
+
+    const lastExecutionTimeBySession = {}
+
+    return function(req, res, next) {
+        const sessionId = req.sessionId
+        const currentTime = Date.now()
+
+        if (!lastExecutionTimeBySession[sessionId]) {
+            // First time execution for this session
+            lastExecutionTimeBySession[sessionId] = currentTime
+            next();
+        } else {
+            const timeSinceLastExecution = currentTime - lastExecutionTimeBySession[sessionId]
+
+            if (timeSinceLastExecution >= minIntervalInMillis) {
+                // Enough time has passed since the last execution
+                lastExecutionTimeBySession[sessionId] = currentTime
+                next();
+            } else {
+                // Throttle if the request is made too soon
+                const waitTime = minIntervalInMillis - timeSinceLastExecution
+                res.status(429).json({
+                    message: `Please wait for ${waitTime}ms before executing code again.`
+                });
+            }
+        }
+    }
+}
+
+
 const restrictPolling = () => {
 
     let lastAllowedTime = Date.now()
@@ -52,4 +84,4 @@ const restrictFeature = (maxCpuLoad, maxRamLoad) => {
 
 }
 
-module.exports = { restrictPolling, restrictFeature }
+module.exports = { restrictPolling, restrictFeature, throttle }

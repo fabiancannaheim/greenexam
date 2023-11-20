@@ -7,8 +7,7 @@ const logger = require('../utils/logger')
 
 const executeCode = (req, res) => {
 
-    logger.trace({ message: 'Code Execution Request' })
-    logger.trace({ message: 'System metrics', CPULoad: global.CPU_LOAD, RAMLoad: global.RAM_LOAD })
+    logger.trace({ message: 'Code Execution Request', CPULoad: global.CPU_LOAD, RAMLoad: global.RAM_LOAD })
 
     const lang = req.params.lang
     const code = req.body.code
@@ -36,8 +35,6 @@ const executePython = (code, callback) => {
     const filename = `script-${uuidv4()}.py`
     const filepath = path.join(dir, filename)
 
-    logger.trace({ message: 'Enter executePython()', code: code })
-
     // Write code to temp file
     fs.writeFileSync(filepath, code)
 
@@ -53,8 +50,6 @@ const executePython = (code, callback) => {
         memoryLimit = '192m';
         cpuLimit = '0.75';
     }
-
-    logger.trace({ message: 'Applied limitations', CPULimit: cpuLimit, RAMLimit: memoryLimit})
 
     // Command to run the Python script inside a Docker container
     const dockerCommand = [
@@ -84,8 +79,9 @@ const executePython = (code, callback) => {
 
         // Callback with the results
         callback(error, result)
+
+        logger.trace({ message: 'executePython()', CPULimit: cpuLimit, RAMLimit: memoryLimit, result: result, error: error})
     
-        logger.trace({ message: 'Leave executePython()', result: result, error: error })
     })
 
 }
@@ -100,8 +96,6 @@ const executeJava = (code, callback) => {
 
     const className = classNameMatch[1] + uuidv4().replaceAll('-', '')
     const dir = path.join(__dirname, '../tmp')
-
-    logger.trace({ message: 'Enter executeJava()', code: code })
 
     code = code.replace(classNameMatch[1], className)
 
@@ -131,9 +125,6 @@ const executeJava = (code, callback) => {
         // Higher thread stack size
         jvmOptions = '-Xmx256m -XX:CICompilerCount=4 -Xss1024k -XX:+UseG1GC';
     }
-
-    logger.trace({ message: 'Applied limitations',  Options: jvmOptions })
-
 
     const dockerCommand = [
         'docker', 'run', '--rm',
@@ -167,14 +158,12 @@ const executeJava = (code, callback) => {
 
         callback(error, result)
     
-        logger.trace({ message: 'Leave executeJava()', result: result, error: error })
+        logger.trace({ message: 'executeJava()', Options: jvmOptions, result: result, error: error })
     })
 
 }
 
 const executeC = (code, callback) => {
-
-    logger.trace({ message: 'Enter executeC()', code: code })
 
     const programName = `program-${uuidv4()}`
     const filename = `${programName}.c`;
@@ -195,8 +184,6 @@ const executeC = (code, callback) => {
     } else if (global.CPU_LOAD > 0.3 || global.RAM_LOAD > 0.3) {
         compileOption = gcc.MODERATE_OPTIMIZATION
     }
-
-    logger.trace({ message: 'Applied limitations',  gccOption: compileOption })
 
     const dockerCommand = [
         'docker', 'run', '--rm',
@@ -230,7 +217,7 @@ const executeC = (code, callback) => {
         
         callback(error, result);
 
-        logger.trace({ message: 'Leave executeC()', result: result, error: error })
+        logger.trace({ message: 'executeC()', gccOption: compileOption, result: result, error: error })
     })
 
 };
