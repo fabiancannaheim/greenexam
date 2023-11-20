@@ -1,0 +1,1 @@
+public class SlowTest42fcc66782bc49a1888f8758de3cd6ed { public static void main(String[] args) { System.out.println("Hello Slow World and Java!"); } }

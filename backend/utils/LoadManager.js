@@ -41,6 +41,6 @@ class LoadManager {
 }
 
 const loadManager = new LoadManager()
-Object.freeze(loadManager)
+//Object.freeze(loadManager)
 
 module.exports = { loadManager, FeatureState }

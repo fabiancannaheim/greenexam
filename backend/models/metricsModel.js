@@ -14,26 +14,49 @@ const ramUsageGauge = new promClient.Gauge({
     registers: [promClient.register]
 })
 
+const computeCpuUsage = () => {
+
+    const cpus = os.cpus()
+    let totalIdleTime = 0
+    let totalTickTime = 0
+
+    cpus.forEach((cpu) => {
+        for (type in cpu.times) {
+            totalTickTime += cpu.times[type]
+        }
+        totalIdleTime += cpu.times.idle
+    });
+
+    return {
+        totalIdleTime,
+        totalTickTime
+    };
+}
+
 const updateSystemMetrics = () => {
 
     const totalMemory = os.totalmem()
     const freeMemory = os.freemem()
     const usedMemory = totalMemory - freeMemory
-    const usedMemoryInMB = usedMemory / 1024 / 1024
-    const memUsage = Number((usedMemory / totalMemory).toFixed(2))
-    const cpuUsage = os.loadavg()[0]
-    const cpuCores = os.cpus().length
-    const cpuLoad = cpuUsage / cpuCores
+    const memUsage = Number(((usedMemory / totalMemory) * 100).toFixed(2))
 
-    // Set Gauge for API access
-    cpuUsageGauge.set(cpuLoad)
-    ramUsageGauge.set(memUsage)
+    const finalCpuInfo = calculateCpuUsage()
+    const idleDifference = finalCpuInfo.totalIdleTime - previousCpuInfo.totalIdleTime
+    const totalDifference = finalCpuInfo.totalTickTime - previousCpuInfo.totalTickTime
+    const cpuUsage = 100 - Math.round((100 * idleDifference) / totalDifference)
+
+    // Update previous CPU info for next interval
+    previousCpuInfo = finalCpuInfo;
+
+    // Set Gauges for API access
+    cpuUsageGauge.set(cpuUsage);
+    ramUsageGauge.set(memUsage);
 
     // Set global variable for internal access
-    global.RAM_LOAD = memUsage
-    global.CPU_LOAD = cpuLoad
+    global.RAM_LOAD = memUsage;
+    global.CPU_LOAD = cpuUsage;
 
-    loadManager.updateState(cpuLoad, memUsage)
+    loadManager.updateState(cpuUsage, memUsage)
 
 }
 
