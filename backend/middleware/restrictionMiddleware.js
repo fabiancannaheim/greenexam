@@ -12,14 +12,14 @@ const throttle = (minIntervalInMillis) => {
         if (!lastExecutionTimeBySession[sessionId]) {
             // First time execution for this session
             lastExecutionTimeBySession[sessionId] = currentTime
-            next();
+            next()
         } else {
             const timeSinceLastExecution = currentTime - lastExecutionTimeBySession[sessionId]
 
             if (timeSinceLastExecution >= minIntervalInMillis) {
                 // Enough time has passed since the last execution
                 lastExecutionTimeBySession[sessionId] = currentTime
-                next();
+                next()
             } else {
                 // Throttle if the request is made too soon
                 const waitTime = minIntervalInMillis - timeSinceLastExecution

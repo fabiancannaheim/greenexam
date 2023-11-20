@@ -4,6 +4,7 @@ const gcc = require('../utils/gccOptions')
 const { v4: uuidv4 } = require('uuid')
 const { spawn } = require('child_process')
 const logger = require('../utils/logger')
+const { loadManager, FeatureState } = require('../utils/LoadManager')
 
 const executeCode = (req, res) => {
 
@@ -39,16 +40,17 @@ const executePython = (code, callback) => {
     // Adjust Docker container resource limits based on system load
     let memoryLimit = '256m';
     let cpuLimit = '1.0';
-    if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
-        // High load
-        memoryLimit = '128m';
-        cpuLimit = '0.5';
-    } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
-        // Moderate load
-        memoryLimit = '192m';
-        cpuLimit = '0.75';
+    
+    if (loadManager.state === FeatureState.MINIMAL_COMPILATION) {
+        if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
+            memoryLimit = '128m';
+            cpuLimit = '0.5';
+        } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
+            memoryLimit = '192m';
+            cpuLimit = '0.75';
+        }
     }
-
+    
     // Command to run the Python script inside a Docker container
     const dockerCommand = [
         'docker', 'run', '--rm',
@@ -102,28 +104,28 @@ const executeJava = (code, callback) => {
 
     fs.writeFileSync(filepath, code)
 
-    // JVM options based on CPU and RAM load
-    let jvmOptions = '';
+    // Low load, allocate more resources
+    // G1 garbage collector for high throughput and low pause times
+    // Higher thread stack size
+    let jvmOptions = '-Xmx256m -XX:CICompilerCount=4 -Xss1024k -XX:+UseG1GC';
 
-    if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
-        // High load, reduce resource usage
-        // Serial garbage collector -> less memory
-        // Smaller thread stack size to reduce memory
-        // JIT Compilation turned off to reduce CPU usage
-        // Disabled explicit garbage collection to avoid overhead
-        jvmOptions = '-Xmx128m -XX:CICompilerCount=1 -Xss256k -XX:+UseSerialGC -Djava.compiler=NONE -XX:+DisableExplicitGC';
-    } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
-        // Moderate load
-        // Parallel garbeage collector 
-        // larger thread stack size
-        jvmOptions = '-Xmx192m -XX:CICompilerCount=2 -Xss512k -XX:+UseParallelGC';
-    } else {
-        // Low load, allocate more resources
-        // G1 garbage collector for high throughput and low pause times
-        // Higher thread stack size
-        jvmOptions = '-Xmx256m -XX:CICompilerCount=4 -Xss1024k -XX:+UseG1GC';
+     // JVM options based on CPU and RAM load
+    if (loadManager.state === FeatureState.MINIMAL_COMPILATION) {
+        if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
+            // High load, reduce resource usage
+            // Serial garbage collector -> less memory
+            // Smaller thread stack size to reduce memory
+            // JIT Compilation turned off to reduce CPU usage
+            // Disabled explicit garbage collection to avoid overhead
+            jvmOptions = '-Xmx128m -XX:CICompilerCount=1 -Xss256k -XX:+UseSerialGC -Djava.compiler=NONE -XX:+DisableExplicitGC';
+        } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
+            // Moderate load
+            // Parallel garbeage collector 
+            // larger thread stack size
+            jvmOptions = '-Xmx192m -XX:CICompilerCount=2 -Xss512k -XX:+UseParallelGC';
+        } 
     }
-
+   
     const dockerCommand = [
         'docker', 'run', '--rm',
         '--user=myuser',
@@ -175,12 +177,14 @@ const executeC = (code, callback) => {
     let compileOption = gcc.MAX_OPTIMIZATION
 
     // Adjust GCC compile options based on system load
-    if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
-        compileOption = gcc.NO_OPTIMIZATION
-    } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
-        compileOption = gcc.MORE_OPTIMIZATION
-    } else if (global.CPU_LOAD > 0.3 || global.RAM_LOAD > 0.3) {
-        compileOption = gcc.MODERATE_OPTIMIZATION
+    if (loadManager.state === FeatureState.MINIMAL_COMPILATION) {
+        if (global.CPU_LOAD > 0.7 || global.RAM_LOAD > 0.7) {
+            compileOption = gcc.NO_OPTIMIZATION
+        } else if (global.CPU_LOAD > 0.5 || global.RAM_LOAD > 0.5) {
+            compileOption = gcc.MORE_OPTIMIZATION
+        } else if (global.CPU_LOAD > 0.3 || global.RAM_LOAD > 0.3) {
+            compileOption = gcc.MODERATE_OPTIMIZATION
+        }
     }
 
     const dockerCommand = [

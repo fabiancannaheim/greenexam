@@ -30,6 +30,10 @@ const customFormat = winston.format.printf(({ timestamp, level, message, ...meta
   return msg
 });
 
+const sysFilter = winston.format((info, opts) => {
+  return info.level === 'sys' ? info : false;
+});
+
 const logger = winston.createLogger({
   levels: logLevels.levels,
   format: winston.format.combine(
@@ -63,7 +67,11 @@ const logger = winston.createLogger({
     }),
     new winston.transports.File({ 
       filename: path.join(__dirname, '../logs/sys.log'),
-      level: 'sys' 
+      level: 'sys',
+      format: winston.format.combine(
+        sysFilter(),
+        customFormat
+      )
     }),
     new winston.transports.File({ 
       filename: path.join(__dirname, '../logs/combined.log') 

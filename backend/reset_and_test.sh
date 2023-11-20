@@ -26,3 +26,19 @@ npx jasmine
 
 # Kill the Node server
 kill -9 $NODE_PID
+
+# Reset logs
+echo ""
+echo "Reset logs..."
+
+LOG_DIR="./logs"
+
+if [ -d "$LOG_DIR" ]; then
+    for file in "$LOG_DIR"/*; do
+        if [ -f "$file" ]; then
+            truncate -s 0 "$file"
+        fi
+    done
+else
+    echo "Directory does not exist: $LOG_DIR"
+fi
