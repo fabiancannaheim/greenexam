@@ -276,8 +276,8 @@ const autocompletePython = (code, line, col, callback) => {
 
     process.on('close', (code) => {
         try {
-            const suggestions = JSON.parse(result);  
-            callback(null, suggestions);
+            const suggestions = JSON.parse(result); 
+            callback(error, suggestions)
         } catch (error) {
             console.error("Parsing Error:", error)
             callback(error, null);

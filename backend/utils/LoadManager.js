@@ -1,5 +1,6 @@
 
 const logger = require('../utils/logger')
+const { getActiveSessions } = require("../utils/sessionCounter")
 
 class FeatureState {
     static FULL_FEATURES = 1
@@ -34,7 +35,7 @@ class LoadManager {
             }
         }
         //logger.sys({ state: this._state, CPULoad: cpuLoad, RAMLoad: ramLoad })
-        logger.sys("", { state: this._state, CPULoad: cpuLoad, RAMLoad: ramLoad });
+        logger.sys("", { state: this._state, users: getActiveSessions(), CPULoad: cpuLoad, RAMLoad: ramLoad });
 
     }
 

@@ -17,6 +17,7 @@ const metricsRoutes = require("./routes/metricsRoutes")
 const stateRoutes = require("./routes/stateRoutes")
 
 const sessionMiddleware = require("./middleware/sessionMiddleware")
+const { sessionCounterMiddleware } = require("./utils/sessionCounter")
 const errorHandlingMiddleware = require("./middleware/errorHandlingMiddleware")
 
 const app = express()
@@ -34,6 +35,7 @@ app.use(bodyParser.json())
 
 // Before middleware
 app.use(sessionMiddleware)
+app.use(sessionCounterMiddleware)
 
 // Routes
 app.use("/auth", authRoutes)

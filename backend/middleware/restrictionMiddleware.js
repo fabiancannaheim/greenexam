@@ -1,5 +1,27 @@
 require('dotenv').config()
+const { loadManager, FeatureState } = require("../utils/LoadManager")
 
+const codeExecutionThrottling = (time) => {
+    return function(req, res, next) {
+        const currentFeatureState = loadManager.state
+        if (currentFeatureState >= FeatureState.ON_DEMAND_EXECUTION) {
+            return throttle(time)(req, res, next)
+        } else {
+            next()
+        }
+    }
+}
+
+const autocompleteRestriction = () => {
+    return function(req, res, next) {
+        const currentFeatureState = loadManager.state
+        if (currentFeatureState >= FeatureState.CLIENT_SIDE_PROCESSING) {
+            res.status(429).send("Feature is deactivated. Please try again later.")
+        } else {
+            next()
+        }
+    }
+}
 
 const throttle = (minIntervalInMillis) => {
 
@@ -84,4 +106,4 @@ const restrictFeature = (maxCpuLoad, maxRamLoad) => {
 
 }
 
-module.exports = { restrictPolling, restrictFeature, throttle }
+module.exports = { codeExecutionThrottling, autocompleteRestriction, restrictPolling, restrictFeature, throttle }

@@ -33,17 +33,19 @@ const computeCpuUsage = () => {
     };
 }
 
+let previousCpuInfo = computeCpuUsage()
+
 const updateSystemMetrics = () => {
 
     const totalMemory = os.totalmem()
     const freeMemory = os.freemem()
     const usedMemory = totalMemory - freeMemory
-    const memUsage = Number(((usedMemory / totalMemory) * 100).toFixed(2))
+    const memUsage = (Number(((usedMemory / totalMemory) * 100).toFixed(2))) / 100
 
-    const finalCpuInfo = calculateCpuUsage()
+    const finalCpuInfo = computeCpuUsage()
     const idleDifference = finalCpuInfo.totalIdleTime - previousCpuInfo.totalIdleTime
     const totalDifference = finalCpuInfo.totalTickTime - previousCpuInfo.totalTickTime
-    const cpuUsage = 100 - Math.round((100 * idleDifference) / totalDifference)
+    const cpuUsage = (100 - Math.round((100 * idleDifference) / totalDifference)) / 100
 
     // Update previous CPU info for next interval
     previousCpuInfo = finalCpuInfo;
