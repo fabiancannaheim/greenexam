@@ -11,12 +11,13 @@ import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
 import React, { useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Header } from "./Header";
+
+import Header from "./Header";
 import Output from "./Output";
 import Prompt from "./Prompt";
 import Tests from "./Tests";
 
-export const API_URL = "http://192.168.53.217:3000";
+export const API_URL = "http://192.168.1.8:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
@@ -72,7 +73,7 @@ function App() {
   const runCode = () => {
     axios
       .post(
-        `${API_URL}/execution/${selectedLanguage}`,
+        `${API_URL}/code/execute/${selectedLanguage}`,
         {
           code: code,
         },

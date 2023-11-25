@@ -1,10 +1,4 @@
-/*!
- * Color mode toggler for Bootstrap's docs (https://getbootstrap.com/)
- * Copyright 2011-2023 The Bootstrap Authors
- * Licensed under the Creative Commons Attribution 3.0 Unported License.
- */
-// Shazam: Changed showActiveTheme from SVG to Icons (svg -> i)
-(() => {
+document.addEventListener("DOMContentLoaded", () => {
   const getStoredTheme = () => localStorage.getItem("theme");
   const setStoredTheme = (theme) => localStorage.setItem("theme", theme);
 
@@ -88,4 +82,6 @@
       });
     });
   });
-})();
+});
+
+(() => {})();
