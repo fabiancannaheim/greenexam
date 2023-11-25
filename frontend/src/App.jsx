@@ -7,10 +7,10 @@ import CodeMirror from "@uiw/react-codemirror";
 
 import { Responsive, WidthProvider } from "react-grid-layout";
 
-import Header from "./Header";
-import Output from "./Output";
-import Prompt from "./Prompt";
-import Tests from "./Tests";
+import Header from "./components/Header";
+import Output from "./components/Output";
+import Prompt from "./components/Prompt";
+import Tests from "./components/Tests";
 
 export const API_URL = "http://192.168.1.8:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -125,7 +125,9 @@ function App() {
               onChange={onChange}
               height="500px"
             />
-            <button onClick={runCode}>Run Code</button>
+            <button onClick={runCode} className="btn btn-primary">
+              Run Code
+            </button>
             <span className="react-grid-dragHandle">[DRAG]</span>
           </div>
           <div key="3" className="resizable-tile">

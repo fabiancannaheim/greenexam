@@ -1,6 +1,6 @@
 // include Bootstrap Partials
-@import "../node_modules/bootstrap/scss/functions";
-@import "../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
 
 /* color palette: https://colorhunt.co/palette/313866504099974ec3fe7be5 */
 $custom-colors: (
@@ -14,4 +14,4 @@ $custom-colors: (
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 // include Bootstrap
-@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../../../node_modules/bootstrap/scss/bootstrap";
