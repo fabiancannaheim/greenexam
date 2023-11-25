@@ -1,15 +1,10 @@
-import "bootstrap/dist/css/bootstrap.css";
-
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "react-grid-layout/css/styles.css";
-import "./App.css";
-import "./custom.scss";
+import axios from "axios";
+import React, { useState } from "react";
 
 import { java } from "@codemirror/lang-java";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
-import axios from "axios";
-import React, { useState } from "react";
+
 import { Responsive, WidthProvider } from "react-grid-layout";
 
 import Header from "./Header";

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+(() => {
   const getStoredTheme = () => localStorage.getItem("theme");
   const setStoredTheme = (theme) => localStorage.setItem("theme", theme);
 
@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const showActiveTheme = (theme, focus = false) => {
     const themeSwitcher = document.querySelector("#bd-theme");
+
+    console.log("in showActiveTheme");
+    console.log(themeSwitcher);
 
     if (!themeSwitcher) {
       return;
@@ -71,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   window.addEventListener("DOMContentLoaded", () => {
+    console.log("in DOMContentLoaded");
     showActiveTheme(getPreferredTheme());
 
     document.querySelectorAll("[data-bs-theme-value]").forEach((toggle) => {
@@ -82,6 +86,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
-});
-
-(() => {})();
+})();
