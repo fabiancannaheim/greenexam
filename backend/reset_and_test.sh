@@ -29,7 +29,7 @@ kill -9 $NODE_PID
 
 # Reset logs
 echo ""
-echo "Reset logs..."
+echo "Reset ./logs"
 
 LOG_DIR="./logs"
 
@@ -42,3 +42,18 @@ if [ -d "$LOG_DIR" ]; then
 else
     echo "Directory does not exist: $LOG_DIR"
 fi
+
+
+# Delete all files in ./tmp except .gitkeep
+echo ""
+echo "Clean ./tmp..."
+
+TMP_DIR="./tmp"
+
+if [ -d "$TMP_DIR" ]; then
+    find "$TMP_DIR" -type f -not -name '.gitkeep' -delete
+else
+    echo "Directory does not exist: $TMP_DIR"
+fi
+
+echo "Temporary files cleaned"

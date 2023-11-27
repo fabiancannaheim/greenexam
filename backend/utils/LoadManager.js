@@ -25,11 +25,11 @@ class LoadManager {
     }
 
     updateState(cpuLoad, ramLoad) {
-        if (cpuLoad > 0.9 || ramLoad > 0.9) {
+        if (cpuLoad > 0.9 /*|| ramLoad > 0.9*/) {
             if (this._state < FeatureState.MINIMAL_COMPILATION) {
                 this._state++
             }
-        } else if (cpuLoad < 0.5 && ramLoad < 0.5) { 
+        } else if (cpuLoad < 0.5 /*&& ramLoad < 0.5*/) { 
             if (this._state > FeatureState.FULL_FEATURES) {
                 this._state--
             }

@@ -1,6 +1,5 @@
 require('dotenv').config()
 const session = require('express-session')
-const { CustomMemoryStore } = require('../utils/sessionCounter');
 
 //const FileStore = require('session-file-store')(session);
 
