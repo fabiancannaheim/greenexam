@@ -14,6 +14,7 @@ class LoadManager {
 
     constructor() {
         if (!LoadManager.instance) {
+            this._count = 0
             this._state = FeatureState.FULL_FEATURES
             LoadManager.instance = this
         }
@@ -25,15 +26,18 @@ class LoadManager {
     }
 
     updateState(cpuLoad, ramLoad) {
-        if (cpuLoad > 0.9 /*|| ramLoad > 0.9*/) {
+        if (cpuLoad > 0.9 && this._count > 30 /*|| ramLoad > 0.9*/) {
             if (this._state < FeatureState.MINIMAL_COMPILATION) {
                 this._state++
+                this._count = 0
             }
-        } else if (cpuLoad < 0.5 /*&& ramLoad < 0.5*/) { 
+        } else if (cpuLoad < 0.5 && this._count > 30 /*&& ramLoad < 0.5*/) { 
             if (this._state > FeatureState.FULL_FEATURES) {
                 this._state--
+                this._count = 0
             }
         }
+        this._count++
         //logger.sys({ state: this._state, CPULoad: cpuLoad, RAMLoad: ramLoad })
         logger.sys("", { state: this._state, users: getActiveSessions(), CPULoad: cpuLoad, RAMLoad: ramLoad });
 
