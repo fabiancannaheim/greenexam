@@ -86,7 +86,7 @@ const Header = () => {
 
   const handleThemeChange = (theme) => {
     // Add your logic for theme change here
-    console.log(`Theme changed to ${theme}`);
+    // console.log(`Theme changed to ${theme}`);
     // const theme = toggle.getAttribute("data-bs-theme-value");
     setStoredTheme(theme);
     setTheme(theme);

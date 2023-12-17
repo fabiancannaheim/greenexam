@@ -3,7 +3,6 @@ import React from "react";
 const Tests = ({ tests }) => {
   return (
     <div className="tests">
-      <h2>Tests/Unit Tests</h2>
       <ul>
         {tests.map((test, index) => (
           <li key={index}>{test}</li>

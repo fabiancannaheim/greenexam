@@ -1,18 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
 
-import { java } from "@codemirror/lang-java";
-import { python } from "@codemirror/lang-python";
-import CodeMirror from "@uiw/react-codemirror";
-
 import { Responsive, WidthProvider } from "react-grid-layout";
 
+import CodeEditor from "./components/CodeEditor";
 import Header from "./components/Header";
 import Output from "./components/Output";
 import Prompt from "./components/Prompt";
 import Tests from "./components/Tests";
 
-export const API_URL = "http://192.168.1.8:3000";
+export const API_URL = "http://pi.local:3000";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function App() {
@@ -37,7 +34,7 @@ function App() {
     setSelectedLanguage(e.target.value);
   };
 
-  const onChange = React.useCallback((value, viewUpdate) => {
+  const onCodeChange = React.useCallback((value, viewUpdate) => {
     setCode(value);
   }, []);
 
@@ -45,18 +42,7 @@ function App() {
     axios
       .get(`${API_URL}/metrics`)
       .then((res) => {
-        setMetrics(JSON.stringify(res.data));
-      })
-      .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          console.log(error.message);
-        }
-      });
-
-    axios
-      .get(`${API_URL}/metrics/prometheus`)
-      .then((res) => {
-        setMetrics((prev) => prev + " --- " + JSON.stringify(res.data));
+        setMetrics(res.data);
       })
       .catch((error) => {
         if (axios.isAxiosError(error)) {
@@ -82,8 +68,8 @@ function App() {
         setOutput(res.data.result);
       })
       .catch((error) => {
-        if (error.response.data.error) {
-          setOutput(error.response.data.error);
+        if (error.response) {
+          if (error.response.data) setOutput(error.response.data.error);
         } else {
           if (axios.isAxiosError(error)) {
             setOutput(error.message);
@@ -115,36 +101,35 @@ function App() {
           draggableHandle=".react-grid-dragHandle"
         >
           <div key="1" className="resizable-tile">
-            <Prompt promptText="Write a function that adds two numbers." />
+            <h2 className="centered-highlighted">Questions</h2>
+            <Prompt />
             <span className="react-grid-dragHandle">[DRAG]</span>
           </div>
           <div key="2" className="resizable-tile">
-            <CodeMirror
-              value=""
-              extensions={[python(), java()]}
-              onChange={onChange}
-              height="500px"
+            <CodeEditor
+              code={""}
+              onCodeChange={onCodeChange}
+              runCode={runCode}
             />
-            <button onClick={runCode} className="btn btn-primary">
-              Run Code
-            </button>
             <span className="react-grid-dragHandle">[DRAG]</span>
           </div>
           <div key="3" className="resizable-tile">
+            <h2 className="centered-highlighted">Tests</h2>
             <Tests tests={tests} />
             <span className="react-grid-dragHandle">[DRAG]</span>
           </div>
           <div key="4" className="resizable-tile">
+            <h2 className="centered-highlighted">Console Output</h2>
             <Output output={output} />
-            <button onClick={runCode}>Submit Code</button>
+            {/* <button onClick={runCode}>Submit Code</button> */}
             <span className="react-grid-dragHandle">[DRAG]</span>
           </div>
-          <div key="5" className="resizable-tile">
+          {/* <div key="5" className="resizable-tile">
             <div>{metrics}</div>
             <button onClick={getMetrics} className="btn btn-primary">
               Get Metrics
             </button>
-          </div>
+          </div> */}
         </ResponsiveGridLayout>
       </div>
     </>

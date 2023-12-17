@@ -1,38 +1,26 @@
+import { java } from "@codemirror/lang-java";
+import { python } from "@codemirror/lang-python";
+import CodeMirror from "@uiw/react-codemirror";
 import React, { useEffect, useRef } from "react";
 
-const CodeEditor = ({ code, onChange }) => {
-  const editorRef = useRef(null);
+const CodeEditor = ({ code, onCodeChange, runCode }) => {
+  const theme = localStorage.getItem("theme");
+  // const setStoredTheme = (theme) => localStorage.setItem("theme", theme);
 
-  useEffect(() => {
-    // Initialize CodeMirror
-    const codeMirror = window.CodeMirror(editorRef.current, {
-      value: code,
-      mode: "python",
-      theme: "material",
-      lineNumbers: true,
-    });
-
-    // Attach a change event listener to CodeMirror
-    codeMirror.on("change", (instance) => {
-      // Get the updated code
-      const newCode = instance.getValue();
-
-      // Call the parent component's onChange callback
-      onChange(newCode);
-    });
-
-    return () => {
-      // Clean up CodeMirror instance when the component unmounts
-      codeMirror.toTextArea();
-    };
-  }, [code, onChange]);
-
-  // return <div ref={editorRef} />;
   return (
-    <div className="code-editor">
-      <h2>Code Editor</h2>
-      <textarea ref={editorRef} defaultValue={code} />
-    </div>
+    <>
+      <CodeMirror
+        value={code}
+        extensions={[python(), java()]}
+        onChange={onCodeChange}
+        height="500px"
+        theme={theme}
+        autoFocus={true}
+      />
+      <button onClick={runCode} className="btn btn-primary">
+        Run Code
+      </button>
+    </>
   );
 };
 

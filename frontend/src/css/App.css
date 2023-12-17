@@ -21,7 +21,7 @@ body {
   border-radius: 4px;
   /* margin: 10px; */
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .resizable-tile:hover {
@@ -101,4 +101,11 @@ li {
   justify-items: center;
   align-items: center;
   padding: 1rem;
+}
+
+.centered-highlighted {
+  text-align: center;
+  background-color: var(--bs-secondary); /* Highlight color */
+  color: var(--bs-light); /* Text color */
+  padding: 10px; /* Add some padding */
 }
