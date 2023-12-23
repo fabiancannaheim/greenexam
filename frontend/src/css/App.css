@@ -1,0 +1,111 @@
+/* Global styles */
+body {
+  font-family: Roboto, Arial, sans-serif;
+  /* background-color: #f0f0f0; */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Resizable Tile styles */
+.resizable-tile {
+  /* background-color: #ffffff; */
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  /* padding: 20px; */
+  border-radius: 4px;
+  /* margin: 10px; */
+  transition: all 0.3s ease;
+  overflow: auto;
+}
+
+.resizable-tile:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.resizable-tile > div {
+  padding: 16px;
+}
+
+.react-grid-dragHandle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: grab;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Button styles */
+button {
+  /* background-color: #007acc; */
+  /* color: #fff; */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #005a9d;
+}
+
+/* Textarea styles */
+textarea {
+  width: 100%;
+  min-height: 200px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+/* Output styles */
+pre {
+  white-space: pre-wrap;
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+}
+
+/* Tests styles */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 5px 0;
+}
+
+/* Responsive Grid styles */
+.layout {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.langSelect {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.centered-highlighted {
+  text-align: center;
+  background-color: var(--bs-secondary); /* Highlight color */
+  color: var(--bs-light); /* Text color */
+  padding: 10px; /* Add some padding */
+}
