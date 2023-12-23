@@ -22,6 +22,7 @@
 ######################
 *.log
 *.sql
+!init.sql
 *.sqlite
 
 # OS generated files #
@@ -79,5 +80,5 @@ __pycache__/
 # Other #
 #########
 *.env
-*.env.example
+!.env.example
 *.git
