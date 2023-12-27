@@ -1,8 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-
 import { Responsive, WidthProvider } from "react-grid-layout";
-
 import CodeEditor from "./components/CodeEditor";
 import Header from "./components/Header";
 import Output from "./components/Output";
@@ -94,10 +92,7 @@ function App() {
         <ResponsiveGridLayout
           className="layout"
           layouts={{ lg: layout }}
-          // breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
           cols={{ lg: 12, md: 12, sm: 6, xs: 2, xxs: 1 }}
-          // rowHeight={100}
-          // width={1200}
           draggableHandle=".react-grid-dragHandle"
         >
           <div key="1" className="resizable-tile">
@@ -121,18 +116,12 @@ function App() {
           <div key="4" className="resizable-tile">
             <h2 className="centered-highlighted">Console Output</h2>
             <Output output={output} />
-            {/* <button onClick={runCode}>Submit Code</button> */}
             <span className="react-grid-dragHandle">[DRAG]</span>
           </div>
-          {/* <div key="5" className="resizable-tile">
-            <div>{metrics}</div>
-            <button onClick={getMetrics} className="btn btn-primary">
-              Get Metrics
-            </button>
-          </div> */}
         </ResponsiveGridLayout>
       </div>
     </>
   );
 }
+
 export default App;
